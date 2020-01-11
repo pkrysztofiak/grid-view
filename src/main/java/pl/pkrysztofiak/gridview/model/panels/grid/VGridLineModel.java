@@ -16,6 +16,7 @@ public class VGridLineModel {
     private final ObservableList<PanelModel> panels = FXCollections.observableArrayList();
     private final Observable<PanelModel> panelAddedObservable = JavaFxObservable.additionsOf(panels); 
     private final Observable<PanelModel> panelRemovedObservable = JavaFxObservable.removalsOf(panels);
+
     
     {
         panelAddedObservable.subscribe(this::onPanelAdded);
