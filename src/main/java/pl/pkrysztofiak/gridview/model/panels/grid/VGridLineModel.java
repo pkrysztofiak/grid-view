@@ -54,12 +54,8 @@ public class VGridLineModel {
             throw new RuntimeException();
         }
         Line2D line = new Line2D(0, panel.getRatioMinY(), 0, panel.getRatioMaxY());
-//        ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setStartX);
-//        ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setEndX);
         panel.ratioMinYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setStartY);
         panel.ratioMaxYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setEndY);
-        
-        System.out.println("line created=" + line);
         
         panelToLine.put(panel, line);
         lines.add(line);
