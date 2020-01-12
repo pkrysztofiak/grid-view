@@ -11,7 +11,7 @@ import pl.pkrysztofiak.gridview.model.panels.grid.VGridLineModel;
 import pl.pkrysztofiak.gridview.view.panels.PanelsView;
 
 public class VGridLineView extends Pane {
-
+    
     private final ObservableList<Line> lines = FXCollections.observableArrayList();
     
     {
@@ -39,7 +39,7 @@ public class VGridLineView extends Pane {
         Observable.combineLatest(vGridLineModel.ratioXObservable, panelsView.widthObservable, (ratioX, width) -> ratioX * width).subscribe(x -> {
             setLayoutX(x);
         });
-
+        
         prefHeightProperty().bind(panelsView.heightProperty());
     }
 }
