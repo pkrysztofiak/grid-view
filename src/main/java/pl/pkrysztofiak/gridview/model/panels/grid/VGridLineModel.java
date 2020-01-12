@@ -5,6 +5,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
+import io.reactivex.subjects.PublishSubject;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -25,8 +26,11 @@ public class VGridLineModel {
     private final Map<PanelModel, Line2D> panelToLine = new HashMap<>();
     private final ObservableSet<Line2D> lines = FXCollections.observableSet();
     
+    public final PublishSubject<Double> dragPublishable = PublishSubject.create();
+    
     {
         panelAddedObservable.subscribe(this::onPanelAdded);
+        dragPublishable.subscribe(this::onDrag);
     }
     
     public VGridLineModel(double ratioX) {
@@ -63,5 +67,9 @@ public class VGridLineModel {
     
     public ObservableSet<Line2D> getLines() {
         return lines;
+    }
+    
+    private void onDrag(double ratioX) {
+        ratioXProperty.set(ratioX);
     }
 }
