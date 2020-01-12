@@ -17,6 +17,7 @@ public class PanelsView extends Pane {
 
     private final ObservableList<VGridLineView> vGridLines = FXCollections.observableArrayList();
     public final Observable<Double> widthObservable = JavaFxObservable.valuesOf(widthProperty()).map(Number::doubleValue);
+    public final Observable<Double> heightObservable = JavaFxObservable.valuesOf(heightProperty()).map(Number::doubleValue);
     
     public PanelsView(PanelsModel panelsModel) {
         Bindings.bindContent(getChildren(), vGridLines);

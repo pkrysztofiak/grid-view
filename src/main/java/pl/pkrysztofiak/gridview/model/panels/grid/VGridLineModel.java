@@ -1,11 +1,15 @@
 package pl.pkrysztofiak.gridview.model.panels.grid;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import pl.pkrysztofiak.gridview.commons.Line2D;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class VGridLineModel {
@@ -17,6 +21,8 @@ public class VGridLineModel {
     private final Observable<PanelModel> panelAddedObservable = JavaFxObservable.additionsOf(panels); 
     private final Observable<PanelModel> panelRemovedObservable = JavaFxObservable.removalsOf(panels);
 
+    private final Map<PanelModel, Line2D> panelToLine = new HashMap<>();
+    private final ObservableList<Line2D> lines = FXCollections.observableArrayList();
     
     {
         panelAddedObservable.subscribe(this::onPanelAdded);
@@ -37,6 +43,7 @@ public class VGridLineModel {
     private void onPanelAdded(PanelModel panel) {
         if (panel.getRatioMinX().equals(ratioXProperty.get())) {
             ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(x -> panel.ratioMinXProperty.set(x));
+            
             panel.ratioMinXObservable.filter(panelMinX -> !panelMinX.equals(ratioXProperty.get())).takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(ratioMinX -> panels.remove(panel));
             
         } else if (panel.getRatioMaxX().equals(ratioXProperty.get())) {
@@ -45,5 +52,17 @@ public class VGridLineModel {
         } else {
             throw new RuntimeException();
         }
+        Line2D line = new Line2D(0, panel.getRatioMinY(), 0, panel.getRatioMaxY());
+//        ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setStartX);
+//        ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setEndX);
+        panel.ratioMinYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setStartY);
+        panel.ratioMaxYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setEndY);
+        
+        panelToLine.put(panel, line);
+        lines.add(line);
+    }
+    
+    public ObservableList<Line2D> getLines() {
+        return lines;
     }
 }
