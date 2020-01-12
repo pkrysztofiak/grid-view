@@ -4,14 +4,13 @@ import io.reactivex.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import pl.pkrysztofiak.gridview.model.panels.grid.VGridLineModel;
 import pl.pkrysztofiak.gridview.view.panels.PanelsView;
 
-public class VGridLineView extends StackPane {
+public class VGridLineView extends Pane {
 
 //    private final Line testLine = new Line(0, 0, 0, 100);
     
@@ -19,8 +18,8 @@ public class VGridLineView extends StackPane {
     
     {
         setMinWidth(0);
+        setPrefWidth(0.);
         setMaxWidth(0);
-        setAlignment(Pos.TOP_CENTER);
         
 //        testLine.setStroke(Color.RED);
 //        testLine.setStrokeWidth(4);
@@ -32,14 +31,19 @@ public class VGridLineView extends StackPane {
 
         vGridLineModel.getLines().forEach(modelLine -> {
             
+//            System.out.println(modelLine);
+            
             Line line = new Line();
             line.setStroke(Color.RED);
             line.setStrokeWidth(8);
             lines.add(line);
             
             panelsView.heightObservable.subscribe(height -> {
-                line.setStartY(height * modelLine.getStartY());
-                line.setEndY(height * modelLine.getEndY());
+                double viewStartY = height * modelLine.getStartY();
+                line.setStartY(viewStartY);
+                double viewEndY = height * modelLine.getEndY();
+                System.out.println("for line=" + modelLine + " viewStartY=" + viewStartY + " viewEndY=" + viewEndY);
+                line.setEndY(viewEndY);
             });
         });
         

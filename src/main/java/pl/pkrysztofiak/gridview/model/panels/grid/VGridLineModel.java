@@ -9,6 +9,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import pl.pkrysztofiak.gridview.commons.Line2D;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
@@ -22,7 +23,7 @@ public class VGridLineModel {
     private final Observable<PanelModel> panelRemovedObservable = JavaFxObservable.removalsOf(panels);
 
     private final Map<PanelModel, Line2D> panelToLine = new HashMap<>();
-    private final ObservableList<Line2D> lines = FXCollections.observableArrayList();
+    private final ObservableSet<Line2D> lines = FXCollections.observableSet();
     
     {
         panelAddedObservable.subscribe(this::onPanelAdded);
@@ -58,11 +59,13 @@ public class VGridLineModel {
         panel.ratioMinYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setStartY);
         panel.ratioMaxYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setEndY);
         
+        System.out.println("line created=" + line);
+        
         panelToLine.put(panel, line);
         lines.add(line);
     }
     
-    public ObservableList<Line2D> getLines() {
+    public ObservableSet<Line2D> getLines() {
         return lines;
     }
 }
