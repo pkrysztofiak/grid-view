@@ -52,23 +52,10 @@ public class VGridLineView extends Pane {
         
         prefHeightProperty().bind(panelsView.heightProperty());
         
-//        pressedXObservable.switchMap(pressedX -> Observable.combineLatest(draggedXObservable, Observable.just(vGridLineModel.getRatioX()), (x, y) -> 1)).subscribe(next -> {
-//            
-//        });
         pressedXObservable.switchMap(pressedX -> Observable.combineLatest(draggedXObservable, Observable.just(vGridLineModel.getRatioX()), (draggedX, ratioX) -> {
             return ratioX + (draggedX - pressedX) / panelsView.getWidth();
         })).subscribe(newRatioX -> {
             vGridLineModel.dragPublishable.onNext(newRatioX);
         });
-        
-//        pressedXObservable.switchMap(pressedX -> Observable.combineLatest(drag, source2, combiner))
-        
-//        pressedXObservable.switchMap(pressedX -> draggedXObservable.map(draggedX -> pressedX).take(1)).subscribe(pressedX -> {
-//            vGridLineModel.startDragEvent.onNext(pressedX / panelsView.getWidth());
-//        });
-        
-//        pressedXObservable.switchMap(pressedX -> draggedXObservable.map(draggedX -> pressedX + draggedX - pressedX)).subscribe(deltaX -> {
-//            vGridLineModel.dragEvent.onNext(deltaX / panelsView.getWidth());
-//        });
     }
 }
