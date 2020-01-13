@@ -7,7 +7,7 @@ import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class HangingProtocol {
 
-    private final HangingProtocolBehaviour behaviour = new HangingProtocolBehaviour();
+    private final Behaviour behaviour = new Behaviour();
 
     public HangingProtocol(PanelModel... panels) {
         Stream.of(panels).forEach(behaviour.addPanelRequestPublishable::onNext);
