@@ -9,17 +9,17 @@ import javafx.collections.ObservableList;
 
 public class VGridLinesModel {
 
-    public final ObservableList<VGridLine> vGridLines = FXCollections.observableArrayList();
-    public final Observable<VGridLine> vGridLineAddedObservable = JavaFxObservable.additionsOf(vGridLines);
+    public final ObservableList<HangingProtocolVLine> vGridLines = FXCollections.observableArrayList();
+    public final Observable<HangingProtocolVLine> vGridLineAddedObservable = JavaFxObservable.additionsOf(vGridLines);
     
     public VGridLinesModel() {
     }
     
-    public Optional<VGridLine> get(double ratioX) {
+    public Optional<HangingProtocolVLine> get(double ratioX) {
         return vGridLines.stream().filter(vGridLine -> vGridLine.getRatioX().equals(ratioX)).findFirst();
     }
     
-    public void add(VGridLine vGridLine) {
+    public void add(HangingProtocolVLine vGridLine) {
         vGridLines.add(vGridLine);
     }
 }
