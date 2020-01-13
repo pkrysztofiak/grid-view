@@ -3,11 +3,11 @@ package pl.pkrysztofiak.gridview.model;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
-import pl.pkrysztofiak.gridview.model.panels.PanelsModel;
+import pl.pkrysztofiak.gridview.model.panels.HangingProtocol;
 
 public class Model {
 
-    private final ObjectProperty<PanelsModel> panelsProperty = new SimpleObjectProperty<>(new PanelsModel(
+    private final ObjectProperty<HangingProtocol> panelsProperty = new SimpleObjectProperty<>(new HangingProtocol(
             new PanelModel(0, 0, 0.5, 0.25),
             new PanelModel(0.5, 0, 1, 0.25), 
             new PanelModel(0, 0.25, 1, 0.75),
@@ -15,7 +15,7 @@ public class Model {
             new PanelModel(0.5, 0.75, 1, 1)
             ));
     
-    public PanelsModel getPanels() {
+    public HangingProtocol getPanels() {
         return panelsProperty.get();
     }
 }

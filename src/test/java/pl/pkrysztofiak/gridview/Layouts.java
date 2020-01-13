@@ -1,7 +1,7 @@
 package pl.pkrysztofiak.gridview;
 
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
-import pl.pkrysztofiak.gridview.model.panels.PanelsModel;
+import pl.pkrysztofiak.gridview.model.panels.HangingProtocol;
 
 public class Layouts {
 
@@ -9,12 +9,12 @@ public class Layouts {
         //  -----
         //  | | |
         //  -----
-        new PanelsModel(
+        new HangingProtocol(
                 new PanelModel(0, 0, 0.5, 1),
                 new PanelModel(0.5, 0, 1, 1)
                 );
         
-        new PanelsModel(
+        new HangingProtocol(
                 new PanelModel(0, 0, 0.5, 0.25),
                 new PanelModel(0.5, 0, 1, 0.25), 
                 new PanelModel(0, 0.25, 1, 0.75),
@@ -22,7 +22,7 @@ public class Layouts {
                 new PanelModel(0.5, 0.75, 1, 1)
                 );
         
-        new PanelsModel(
+        new HangingProtocol(
                 new PanelModel(0, 0, 0.5, 1),
                 new PanelModel(0.5, 0, 1, 1)
                 );
