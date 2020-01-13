@@ -1,4 +1,4 @@
-package pl.pkrysztofiak.gridview.view.panels.grid;
+package pl.pkrysztofiak.gridview.view.layout.grid.lines;
 
 import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
@@ -11,7 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import pl.pkrysztofiak.gridview.commons.Line2D;
-import pl.pkrysztofiak.gridview.model.panels.grid.VGridLineModel;
+import pl.pkrysztofiak.gridview.model.layout.grid.lines.VGridLineModel;
 import pl.pkrysztofiak.gridview.view.layout.grid.GridPanelsView;
 
 public class VGridLineView extends Pane {
