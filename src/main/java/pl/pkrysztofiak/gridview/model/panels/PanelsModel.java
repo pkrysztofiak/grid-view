@@ -16,6 +16,8 @@ public class PanelsModel {
     public final Observable<PanelModel> panelAddedObservable = JavaFxObservable.additionsOf(panels);
 
     public final VGridLinesModel vGridLines = new VGridLinesModel();
+    
+    private final ObservableList<VGridLineModel> vGridLines2 = FXCollections.observableArrayList();
         
     {
         panelAddedObservable.subscribe(this::onPanelAdded);
