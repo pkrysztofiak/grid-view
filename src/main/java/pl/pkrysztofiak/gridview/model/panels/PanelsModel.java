@@ -32,7 +32,7 @@ public class PanelsModel {
                 VGridLineModel vGridLine = optional.get();
                 vGridLine.add(panel);
             } else {
-                VGridLineModel vGridLine = new VGridLineModel(ratioX);
+                VGridLineModel vGridLine = new VGridLineModel(ratioX, vGridLines);
                 vGridLine.add(panel);
                 vGridLines.add(vGridLine);
             }

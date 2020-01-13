@@ -52,4 +52,8 @@ public class PanelModel {
     public String toString() {
         return "PanelModel[minX=" + ratioMinXProperty.get() + ", minY=" + ratioMinYProperty.get() + ", maxX=" + ratioMaxXProperty.get() + ", maxY=" + ratioMaxYProperty.get() + "]";
     }
+    
+    public boolean isVerticallyConnected(PanelModel panel) {
+        return !(panel.getRatioMaxY() < ratioMinYProperty.get() || ratioMaxYProperty.get() < panel.getRatioMinY()); 
+    }
 }
