@@ -1,4 +1,4 @@
-package pl.pkrysztofiak.gridview.view.panels;
+package pl.pkrysztofiak.gridview.view.layout;
 
 import java.util.concurrent.TimeUnit;
 
