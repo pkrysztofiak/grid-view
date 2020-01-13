@@ -1,7 +1,7 @@
 package pl.pkrysztofiak.gridview;
 
+import pl.pkrysztofiak.gridview.model.hangingprotocol.HangingProtocol;
 import pl.pkrysztofiak.gridview.model.panels.Panel;
-import pl.pkrysztofiak.gridview.model.panels.HangingProtocol;
 
 public class Layouts {
 

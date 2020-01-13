@@ -2,8 +2,8 @@ package pl.pkrysztofiak.gridview.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import pl.pkrysztofiak.gridview.model.hangingprotocol.HangingProtocol;
 import pl.pkrysztofiak.gridview.model.panels.Panel;
-import pl.pkrysztofiak.gridview.model.panels.HangingProtocol;
 
 public class Model {
 

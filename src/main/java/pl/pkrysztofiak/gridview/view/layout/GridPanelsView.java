@@ -9,7 +9,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
-import pl.pkrysztofiak.gridview.model.panels.HangingProtocol;
+import pl.pkrysztofiak.gridview.model.hangingprotocol.HangingProtocol;
 import pl.pkrysztofiak.gridview.model.panels.grid.VGridLineModel;
 import pl.pkrysztofiak.gridview.view.panels.grid.VGridLineView;
 
