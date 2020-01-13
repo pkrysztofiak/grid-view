@@ -54,15 +54,6 @@ public class PanelModel {
     }
     
     public boolean isVerticallyConnected(PanelModel panel) {
-        System.out.println();
-        System.out.println("this=" + this);
-        System.out.println("panel=" + panel);
-        boolean condition1 = panel.getRatioMaxY() < ratioMinYProperty.get();
-        boolean condition2 = ratioMaxYProperty.get() < panel.getRatioMinY();
-        boolean combined = !(condition1 || condition2);
-        System.out.println("condition1=" + condition1 + ", condition2=" + condition2);
-        System.out.println("combined conditions=" + combined);
-        System.out.println();
-        return combined; 
+        return !(panel.getRatioMaxY() < ratioMinYProperty.get() || ratioMaxYProperty.get() < panel.getRatioMinY()); 
     }
 }
