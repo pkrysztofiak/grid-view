@@ -3,11 +3,11 @@ package pl.pkrysztofiak.gridview.model;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
-import pl.pkrysztofiak.gridview.model.panels.PanelsModel;
+import pl.pkrysztofiak.gridview.model.panels.GridPanelsModel;
 
 public class Model {
 
-    private final ObjectProperty<PanelsModel> panelsProperty = new SimpleObjectProperty<>(new PanelsModel(
+    private final ObjectProperty<GridPanelsModel> panelsProperty = new SimpleObjectProperty<>(new GridPanelsModel(
             new PanelModel(0, 0, 0.5, 0.25),
             new PanelModel(0.5, 0, 1, 0.25), 
             new PanelModel(0, 0.25, 1, 0.75),
@@ -19,12 +19,12 @@ public class Model {
         //  -----
         //  | | |
         //  -----
-        new PanelsModel(
+        new GridPanelsModel(
                 new PanelModel(0, 0, 0.5, 1),
                 new PanelModel(0.5, 0, 1, 1)
                 );
         
-        new PanelsModel(
+        new GridPanelsModel(
                 new PanelModel(0, 0, 0.5, 0.25),
                 new PanelModel(0.5, 0, 1, 0.25), 
                 new PanelModel(0, 0.25, 1, 0.75),
@@ -32,13 +32,13 @@ public class Model {
                 new PanelModel(0.5, 0.75, 1, 1)
                 );
         
-        new PanelsModel(
+        new GridPanelsModel(
                 new PanelModel(0, 0, 0.5, 1),
                 new PanelModel(0.5, 0, 1, 1)
                 );
     }
     
-    public PanelsModel getPanels() {
+    public GridPanelsModel getPanels() {
         return panelsProperty.get();
     }
 }
