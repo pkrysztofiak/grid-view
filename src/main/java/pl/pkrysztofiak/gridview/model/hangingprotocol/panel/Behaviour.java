@@ -10,7 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
-public class Behaviour {
+class Behaviour {
 
 public final PublishSubject<PanelModel> addPanelRequestPublishable = PublishSubject.create();
     

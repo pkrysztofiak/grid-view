@@ -3,7 +3,6 @@ package pl.pkrysztofiak.gridview.model.hangingprotocol.panel;
 import java.util.stream.Stream;
 
 import javafx.collections.ObservableList;
-import pl.pkrysztofiak.gridview.model.hangingprotocol.Behaviour;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class HangingProtocolPanel {

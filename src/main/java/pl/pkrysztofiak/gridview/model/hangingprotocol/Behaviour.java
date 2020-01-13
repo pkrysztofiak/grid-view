@@ -8,25 +8,25 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import pl.pkrysztofiak.gridview.model.panels.PanelModel;
+import pl.pkrysztofiak.gridview.model.hangingprotocol.panel.HangingProtocolPanel;
 
-public class Behaviour {
+class Behaviour {
 
-    public final PublishSubject<PanelModel> addPanelRequestPublishable = PublishSubject.create();
+    public final PublishSubject<HangingProtocolPanel> addHpPanelRequest = PublishSubject.create();
     
-    private final ObservableList<PanelModel> panels = FXCollections.observableArrayList();
-    private final ObservableList<PanelModel> unmodifiablePanels = FXCollections.unmodifiableObservableList(panels);
-    private final Observable<PanelModel> panelAddedObservable = JavaFxObservable.additionsOf(panels);
- 
+    private final ObservableList<HangingProtocolPanel> hpPanels = FXCollections.observableArrayList();
+    private final ObservableList<HangingProtocolPanel> unmodifiableHpPanels = FXCollections.unmodifiableObservableList(hpPanels);
+    private final Observable<HangingProtocolPanel> hpPanelAddedObservable = JavaFxObservable.additionsOf(hpPanels);
+    
     {
-        addPanelRequestPublishable.delay(0, TimeUnit.SECONDS, Schedulers.single()).subscribe(this::onAddPanelRequest);
+        addHpPanelRequest.delay(0, TimeUnit.SECONDS, Schedulers.single()).subscribe(this::onAddHpPanelRequest);
     }
     
-    public ObservableList<PanelModel> getPanels() {
-        return unmodifiablePanels;
+    public ObservableList<HangingProtocolPanel> getHpPanels() {
+        return unmodifiableHpPanels;
     }
     
-    private void onAddPanelRequest(PanelModel panel) {
-        panels.add(panel);
+    private void onAddHpPanelRequest(HangingProtocolPanel hpPanel) {
+        hpPanels.add(hpPanel);
     }
 }
