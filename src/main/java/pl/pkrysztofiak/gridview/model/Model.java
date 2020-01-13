@@ -2,8 +2,8 @@ package pl.pkrysztofiak.gridview.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import pl.pkrysztofiak.gridview.model.layout.GridPanelsModel;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
-import pl.pkrysztofiak.gridview.model.panels.GridPanelsModel;
 
 public class Model {
 
