@@ -1,4 +1,4 @@
-package pl.pkrysztofiak.gridview.model.panels.grid;
+package pl.pkrysztofiak.gridview.model.hangingprotocol.grid;
 
 import java.util.ArrayList;
 import java.util.Collection;
