@@ -1,4 +1,4 @@
-package pl.pkrysztofiak.gridview.view.layout;
+package pl.pkrysztofiak.gridview.view.layout.grid;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,7 +9,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
-import pl.pkrysztofiak.gridview.model.layout.GridPanelsModel;
+import pl.pkrysztofiak.gridview.model.layout.grid.GridPanelsModel;
 import pl.pkrysztofiak.gridview.model.panels.grid.VGridLineModel;
 import pl.pkrysztofiak.gridview.view.panels.grid.VGridLineView;
 

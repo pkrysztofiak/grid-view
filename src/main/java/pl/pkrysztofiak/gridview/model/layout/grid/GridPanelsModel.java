@@ -1,4 +1,4 @@
-package pl.pkrysztofiak.gridview.model.layout;
+package pl.pkrysztofiak.gridview.model.layout.grid;
 
 import java.util.Optional;
 import java.util.stream.Stream;
