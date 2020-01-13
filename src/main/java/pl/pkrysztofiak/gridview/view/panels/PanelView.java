@@ -1,11 +1,11 @@
 package pl.pkrysztofiak.gridview.view.panels;
 
 import javafx.scene.layout.StackPane;
-import pl.pkrysztofiak.gridview.model.panels.PanelModel;
+import pl.pkrysztofiak.gridview.model.panels.Panel;
 
 public class PanelView extends StackPane {
 
-    public PanelView(PanelModel panelModel) {
+    public PanelView(Panel panelModel) {
         
     }
 }

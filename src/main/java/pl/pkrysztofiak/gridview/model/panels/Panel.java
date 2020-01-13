@@ -5,7 +5,7 @@ import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
-public class PanelModel {
+public class Panel {
 
     public final DoubleProperty ratioMinXProperty = new SimpleDoubleProperty();
     public final Observable<Double> ratioMinXObservable = JavaFxObservable.valuesOf(ratioMinXProperty).map(Number::doubleValue);
@@ -20,7 +20,7 @@ public class PanelModel {
     public final Observable<Double> ratioMaxYObservable = JavaFxObservable.valuesOf(ratioMaxYProperty).map(Number::doubleValue);
     
     
-    public PanelModel(double minX, double minY, double maxX, double maxY) {
+    public Panel(double minX, double minY, double maxX, double maxY) {
         ratioMinXProperty.set(minX);
         ratioMinYProperty.set(minY);
         ratioMaxXProperty.set(maxX);
@@ -53,7 +53,7 @@ public class PanelModel {
         return "PanelModel[minX=" + ratioMinXProperty.get() + ", minY=" + ratioMinYProperty.get() + ", maxX=" + ratioMaxXProperty.get() + ", maxY=" + ratioMaxYProperty.get() + "]";
     }
     
-    public boolean isVerticallyConnected(PanelModel panel) {
+    public boolean isVerticallyConnected(Panel panel) {
         return !(panel.getRatioMaxY() < ratioMinYProperty.get() || ratioMaxYProperty.get() < panel.getRatioMinY()); 
     }
 }

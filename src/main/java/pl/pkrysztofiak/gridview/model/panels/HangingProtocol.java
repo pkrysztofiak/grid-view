@@ -12,8 +12,8 @@ import pl.pkrysztofiak.gridview.model.panels.grid.VGridLinesModel;
 
 public class HangingProtocol {
 
-    private final ObservableList<PanelModel> panels = FXCollections.observableArrayList();
-    public final Observable<PanelModel> panelAddedObservable = JavaFxObservable.additionsOf(panels);
+    private final ObservableList<Panel> panels = FXCollections.observableArrayList();
+    public final Observable<Panel> panelAddedObservable = JavaFxObservable.additionsOf(panels);
 
     public final VGridLinesModel vGridLines = new VGridLinesModel();
     
@@ -23,11 +23,11 @@ public class HangingProtocol {
         panelAddedObservable.subscribe(this::onPanelAdded);
     }
     
-    public HangingProtocol(PanelModel... panels) {
+    public HangingProtocol(Panel... panels) {
         this.panels.setAll(panels);
     }
     
-    private void onPanelAdded(PanelModel panel) {
+    private void onPanelAdded(Panel panel) {
         Stream.of(panel.getRatioMinX(), panel.getRatioMaxX()).forEach(ratioX -> {
             Optional<VGridLineModel> optional = vGridLines.get(ratioX);
             if (optional.isPresent()) {
@@ -41,7 +41,7 @@ public class HangingProtocol {
         });
     }
     
-    public ObservableList<PanelModel> getPanels() {
+    public ObservableList<Panel> getPanels() {
         return panels;
     }
 }
