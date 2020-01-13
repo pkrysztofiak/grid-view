@@ -19,7 +19,7 @@ import javafx.geometry.Point2D;
 import pl.pkrysztofiak.gridview.commons.Line2D;
 import pl.pkrysztofiak.gridview.model.panels.Panel;
 
-public class VGridLineModel {
+public class VGridLine {
 
     private final VGridLinesModel vGridLines;
     
@@ -53,7 +53,7 @@ public class VGridLineModel {
         dragPublishable.subscribe(this::onDrag);
     }
     
-    public VGridLineModel(double ratioX, VGridLinesModel vGridLines) {
+    public VGridLine(double ratioX, VGridLinesModel vGridLines) {
         this.vGridLines = vGridLines;
         ratioXProperty.set(ratioX);
     }
@@ -137,7 +137,7 @@ public class VGridLineModel {
             panelsToRemove.removeAll(dragPanels);
             System.out.println("panelsToRemove=" + panelsToRemove);
             panels.removeAll(panelsToRemove);
-            VGridLineModel newVGridLine = new VGridLineModel(ratioXProperty.get(), vGridLines);
+            VGridLine newVGridLine = new VGridLine(ratioXProperty.get(), vGridLines);
             newVGridLine.addAll(panelsToRemove);
             vGridLines.vGridLines.add(newVGridLine);
         }

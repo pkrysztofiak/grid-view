@@ -9,8 +9,8 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
-import pl.pkrysztofiak.gridview.model.hangingprotocol.HP;
-import pl.pkrysztofiak.gridview.model.hangingprotocol.grid.VGridLineModel;
+import pl.pkrysztofiak.gridview.model.hangingprotocol.HangingProtocol;
+import pl.pkrysztofiak.gridview.model.hangingprotocol.grid.VGridLine;
 import pl.pkrysztofiak.gridview.view.panels.grid.VGridLineView;
 
 public class GridPanelsView extends Pane {
@@ -19,14 +19,14 @@ public class GridPanelsView extends Pane {
     public final Observable<Double> widthObservable = JavaFxObservable.valuesOf(widthProperty()).map(Number::doubleValue);
     public final Observable<Double> heightObservable = JavaFxObservable.valuesOf(heightProperty()).map(Number::doubleValue);
     
-    public GridPanelsView(HP panelsModel) {
+    public GridPanelsView(HangingProtocol panelsModel) {
         Bindings.bindContent(getChildren(), vGridLines);
 
         Observable.fromIterable(panelsModel.vGridLines.vGridLines).delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVGridLineModelAdded);
         panelsModel.vGridLines.vGridLineAddedObservable.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVGridLineModelAdded);
     }
 
-    private void onVGridLineModelAdded(VGridLineModel vGridLineModel) {
+    private void onVGridLineModelAdded(VGridLine vGridLineModel) {
         VGridLineView vGridLine = new VGridLineView(vGridLineModel, this);
         vGridLines.add(vGridLine);
     }
