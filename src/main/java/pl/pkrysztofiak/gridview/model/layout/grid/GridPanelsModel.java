@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 import io.reactivex.Observable;
 import javafx.collections.ObservableList;
-import pl.pkrysztofiak.gridview.model.layout.grid.lines.VGridLineModel;
+import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.VGridLineModel;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class GridPanelsModel {

@@ -1,4 +1,4 @@
-package pl.pkrysztofiak.gridview.model.layout.grid.lines;
+package pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical;
 
 import java.util.ArrayList;
 import java.util.Collection;

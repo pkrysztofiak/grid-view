@@ -11,7 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import pl.pkrysztofiak.gridview.commons.Line2D;
-import pl.pkrysztofiak.gridview.model.layout.grid.lines.VGridLineModel;
+import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.VGridLineModel;
 import pl.pkrysztofiak.gridview.view.layout.grid.GridPanelsView;
 
 public class VGridLineView extends Pane {

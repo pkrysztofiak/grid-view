@@ -10,7 +10,7 @@ import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import io.reactivex.subjects.PublishSubject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import pl.pkrysztofiak.gridview.model.layout.grid.lines.VGridLineModel;
+import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.VGridLineModel;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class Behaviour {
