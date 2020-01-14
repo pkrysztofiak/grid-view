@@ -1,7 +1,10 @@
 package pl.pkrysztofiak.gridview.view.layout.grid.lines;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
+import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,21 +43,24 @@ public class VGridLineView extends Pane {
         this.panelsView = panelsView;
         Bindings.bindContent(getChildren(), lines);
 
-        vGridLineModel.getLines().forEach(this::onLineAdded);
-        vGridLineModel.modelLineAddedObservable.subscribe(this::onLineAdded);
+//        vGridLineModel.getLines().forEach(this::onLineAdded);
+        Observable.fromIterable(vGridLineModel.getVLines()).delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVLineAdded);
+//        vGridLineModel.modelLineAddedObservable.subscribe(this::onVLineAdded);
+        vGridLineModel.vLineAddedObservable().delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVLineAdded);
         
-        Observable.combineLatest(vGridLineModel.ratioXObservable, panelsView.widthObservable, (ratioX, width) -> ratioX * width).subscribe(x -> {
+        
+        Observable.combineLatest(vGridLineModel.ratioXObservable(), panelsView.widthObservable, (ratioX, width) -> ratioX * width).subscribe(x -> {
+            System.out.println("setLayoutX=" + x);
             setLayoutX(x);
         });
         
         prefHeightProperty().bind(panelsView.heightProperty());
         
-        
-        
         pressedXObservable.switchMap(pressedX -> Observable.combineLatest(draggedXObservable, Observable.just(vGridLineModel.getRatioX()), (draggedX, ratioX) -> {
             return ratioX + (draggedX - pressedX) / panelsView.getWidth();
         })).subscribe(newRatioX -> {
-            vGridLineModel.dragPublishable.onNext(newRatioX);
+//            vGridLineModel.dragPublishable.onNext(newRatioX);
+            vGridLineModel.drag(newRatioX);
         });
     }
     
@@ -63,13 +69,16 @@ public class VGridLineView extends Pane {
         vGridLineModel.startDrag(new Point2D(point.getX() / panelsView.getWidth(), point.getY() / panelsView.getHeight()));
     }
     
-    private void onLineAdded(Line2D modelLine) {
+    private void onVLineAdded(Line2D modelLine) {
         Line line = new Line();
         line.setStroke(Color.RED);
         line.setStrokeWidth(8);
         lines.add(line);
         
-        vGridLineModel.modelLineRemovedObservable.filter(modelLine::equals).subscribe(removedModelLine -> {
+//        vGridLineModel.modelLineRemovedObservable.filter(modelLine::equals).subscribe(removedModelLine -> {
+//            lines.remove(line);
+//        });
+        vGridLineModel.vLineRemovedObservable().filter(modelLine::equals).subscribe(removedModelLine -> {
             lines.remove(line);
         });
         
