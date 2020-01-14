@@ -12,21 +12,21 @@ import javafx.geometry.Point2D;
 import pl.pkrysztofiak.gridview.commons.Line2D;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
-public class VGridLineModel {
+public class GridVLineModel {
 
-    private final VGridLineModelBehaviour behaviour;
+    private final GridVLineModelBehaviour behaviour;
     
     private final PublishSubject<PanelModel> addPanelRequest = PublishSubject.create();
     private final PublishSubject<Point2D> startDragRequest = PublishSubject.create();
     private final PublishSubject<Double> dragRequest = PublishSubject.create();
     
-    public VGridLineModel(double ratioX, ObservableList<VGridLineModel> vGridLines, PanelModel... panels) {
-        behaviour = new VGridLineModelBehaviour(ratioX, vGridLines, panels);
+    public GridVLineModel(double ratioX, ObservableList<GridVLineModel> vGridLines, PanelModel... panels) {
+        behaviour = new GridVLineModelBehaviour(ratioX, vGridLines, panels);
         initBehaviour();
     }
     
-    public VGridLineModel(double ratioX, ObservableList<VGridLineModel> vGridLines, List<PanelModel> panels) {
-        behaviour = new VGridLineModelBehaviour(ratioX, vGridLines, panels);
+    public GridVLineModel(double ratioX, ObservableList<GridVLineModel> vGridLines, List<PanelModel> panels) {
+        behaviour = new GridVLineModelBehaviour(ratioX, vGridLines, panels);
         initBehaviour();
     }
     

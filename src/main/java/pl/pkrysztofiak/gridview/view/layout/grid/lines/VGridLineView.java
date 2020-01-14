@@ -14,13 +14,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import pl.pkrysztofiak.gridview.commons.Line2D;
-import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.VGridLineModel;
+import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.GridVLineModel;
 import pl.pkrysztofiak.gridview.view.layout.grid.GridPanelsView;
 
 public class VGridLineView extends Pane {
     
     private final GridPanelsView panelsView;
-    private final VGridLineModel vGridLineModel;
+    private final GridVLineModel vGridLineModel;
     
     private final ObservableList<Line> lines = FXCollections.observableArrayList();
     private final Observable<Double> pressedXObservable = JavaFxObservable.eventsOf(this, MouseEvent.MOUSE_PRESSED).map(MouseEvent::getScreenX);
@@ -38,7 +38,7 @@ public class VGridLineView extends Pane {
         mousePressedObservable.switchMap(pressed -> mouseDraggedObservable.map(dragged -> pressed).take(1)).subscribe(this::onDragStarted);
     }
     
-    public VGridLineView(VGridLineModel vGridLineModel, GridPanelsView panelsView) {
+    public VGridLineView(GridVLineModel vGridLineModel, GridPanelsView panelsView) {
         this.vGridLineModel = vGridLineModel;
         this.panelsView = panelsView;
         Bindings.bindContent(getChildren(), lines);

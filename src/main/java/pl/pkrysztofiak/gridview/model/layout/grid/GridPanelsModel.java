@@ -7,7 +7,7 @@ import io.reactivex.Observable;
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import io.reactivex.subjects.PublishSubject;
 import javafx.collections.ObservableList;
-import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.VGridLineModel;
+import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.GridVLineModel;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class GridPanelsModel {
@@ -27,11 +27,11 @@ public class GridPanelsModel {
         return behaviour.getPanels();
     }
 
-    public ObservableList<VGridLineModel> getVGridLines() {
+    public ObservableList<GridVLineModel> getVGridLines() {
         return behaviour.getVGridLines();
     }
 
-    public Observable<VGridLineModel> vGridLineAdded() {
+    public Observable<GridVLineModel> vGridLineAdded() {
         return behaviour.vGridLineAdded;
     }
 }

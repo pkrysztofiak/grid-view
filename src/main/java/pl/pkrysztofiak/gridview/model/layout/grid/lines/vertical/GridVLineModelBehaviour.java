@@ -5,12 +5,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
-import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -21,9 +19,9 @@ import javafx.geometry.Point2D;
 import pl.pkrysztofiak.gridview.commons.Line2D;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
-public class VGridLineModelBehaviour {
+public class GridVLineModelBehaviour {
 
-    private final ObservableList<VGridLineModel> vGridLines;
+    private final ObservableList<GridVLineModel> gridVLines;
     
     private final ObjectProperty<Double> ratioXProperty = new SimpleObjectProperty<>();
     public final Observable<Double> ratioXObservable = JavaFxObservable.valuesOf(ratioXProperty);
@@ -40,6 +38,8 @@ public class VGridLineModelBehaviour {
         return result;
     });
 
+    private final ObservableList<VPanelLineModel> vPanelLines = FXCollections.observableArrayList();
+    
     private final ObservableSet<Line2D> vLines = FXCollections.observableSet();
     private final ObservableSet<Line2D> unmodifiableVLines = FXCollections.unmodifiableObservableSet(vLines);
     public final Observable<Line2D> vLineAddedObservable = JavaFxObservable.additionsOf(vLines);
@@ -50,23 +50,19 @@ public class VGridLineModelBehaviour {
     private final List<PanelModel> dragPanels = new ArrayList<>();
     
     {
-        //TODO przepisać to single
-//        addPanelRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onAddPanelRequest);
         panelAddedObservable.subscribe(this::onPanelAdded);
-//        startDragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onStartDrag);
-//        dragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onDrag);
-        panelRemovedObservable.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onPanelRemoved);
+        panelRemovedObservable.subscribe(this::onPanelRemoved);
     }
     
-    public VGridLineModelBehaviour(double ratioX, ObservableList<VGridLineModel> vGridLines, PanelModel... panels) {
+    public GridVLineModelBehaviour(double ratioX, ObservableList<GridVLineModel> vGridLines, PanelModel... panels) {
         ratioXProperty.set(ratioX);
-        this.vGridLines = vGridLines;
+        this.gridVLines = vGridLines;
         Stream.of(panels).forEach(this::onAddPanelRequest);
     }
     
-    public VGridLineModelBehaviour(double ratioX, ObservableList<VGridLineModel> vGridLines, Collection<PanelModel> panels) {
+    public GridVLineModelBehaviour(double ratioX, ObservableList<GridVLineModel> vGridLines, Collection<PanelModel> panels) {
         ratioXProperty.set(ratioX);
-        this.vGridLines = vGridLines;
+        this.gridVLines = vGridLines;
         panels.stream().forEach(this::onAddPanelRequest);
     }
     
@@ -144,7 +140,7 @@ public class VGridLineModelBehaviour {
             List<PanelModel> panelsToRemove = FXCollections.observableArrayList(panels);
             panelsToRemove.removeAll(dragPanels);
             panels.removeAll(panelsToRemove);
-            vGridLines.add(new VGridLineModel(ratioXProperty.get(), vGridLines, panelsToRemove));
+            gridVLines.add(new GridVLineModel(ratioXProperty.get(), gridVLines, panelsToRemove));
         }
     }
 }

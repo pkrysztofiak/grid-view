@@ -10,7 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import pl.pkrysztofiak.gridview.model.layout.grid.GridPanelsModel;
-import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.VGridLineModel;
+import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.GridVLineModel;
 import pl.pkrysztofiak.gridview.view.layout.grid.lines.VGridLineView;
 
 public class GridPanelsView extends Pane {
@@ -26,7 +26,7 @@ public class GridPanelsView extends Pane {
         panelsModel.vGridLineAdded().delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVGridLineModelAdded);
     }
 
-    private void onVGridLineModelAdded(VGridLineModel vGridLineModel) {
+    private void onVGridLineModelAdded(GridVLineModel vGridLineModel) {
         VGridLineView vGridLine = new VGridLineView(vGridLineModel, this);
         vGridLines.add(vGridLine);
     }
