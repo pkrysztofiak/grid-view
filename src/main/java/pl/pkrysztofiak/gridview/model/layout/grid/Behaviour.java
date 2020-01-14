@@ -1,10 +1,12 @@
 package pl.pkrysztofiak.gridview.model.layout.grid;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
+import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import io.reactivex.subjects.PublishSubject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +25,8 @@ public class Behaviour {
     public final Observable<VGridLineModel> vGridLineAdded = JavaFxObservable.additionsOf(vGridLines);
     
     {
-        addPanelRequest.subscribe(this::onPanelAdded);
+        //TODO update to Schedulers.single()
+        addPanelRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onPanelAdded);
     }
     
     public ObservableList<PanelModel> getPanels() {
@@ -51,5 +54,4 @@ public class Behaviour {
     private Optional<VGridLineModel> findVGridLine(double x) {
         return vGridLines.stream().filter(vGridLine -> vGridLine.getRatioX().equals(x)).findFirst();
     }
-    
 }
