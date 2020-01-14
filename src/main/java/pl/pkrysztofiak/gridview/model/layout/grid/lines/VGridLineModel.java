@@ -21,10 +21,10 @@ import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class VGridLineModel {
 
-    private final VGridLinesModel vGridLines;
-    
     private final ObjectProperty<Double> ratioXProperty = new SimpleObjectProperty<>();
     public final Observable<Double> ratioXObservable = JavaFxObservable.valuesOf(ratioXProperty);
+    
+    public final PublishSubject<VGridLineModel> addVLineRequest = PublishSubject.create();
     
     private final ObservableList<PanelModel> panels = FXCollections.observableArrayList();
     private final Observable<PanelModel> panelAddedObservable = JavaFxObservable.additionsOf(panels); 
@@ -53,8 +53,7 @@ public class VGridLineModel {
         dragPublishable.subscribe(this::onDrag);
     }
     
-    public VGridLineModel(double ratioX, VGridLinesModel vGridLines) {
-        this.vGridLines = vGridLines;
+    public VGridLineModel(double ratioX) {
         ratioXProperty.set(ratioX);
     }
     
@@ -137,9 +136,9 @@ public class VGridLineModel {
             panelsToRemove.removeAll(dragPanels);
             System.out.println("panelsToRemove=" + panelsToRemove);
             panels.removeAll(panelsToRemove);
-            VGridLineModel newVGridLine = new VGridLineModel(ratioXProperty.get(), vGridLines);
+            VGridLineModel newVGridLine = new VGridLineModel(ratioXProperty.get());
             newVGridLine.addAll(panelsToRemove);
-            vGridLines.vGridLines.add(newVGridLine);
+            addVLineRequest.onNext(newVGridLine);
         }
     }
 }

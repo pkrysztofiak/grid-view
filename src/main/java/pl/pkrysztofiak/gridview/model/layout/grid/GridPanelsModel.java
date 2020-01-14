@@ -33,7 +33,8 @@ public class GridPanelsModel {
                 VGridLineModel vGridLine = optional.get();
                 vGridLine.add(panel);
             } else {
-                VGridLineModel vGridLine = new VGridLineModel(ratioX, vGridLines);
+                VGridLineModel vGridLine = new VGridLineModel(ratioX);
+                vGridLine.addVLineRequest.subscribe(vGridLines.vGridLines::add);
                 vGridLine.add(panel);
                 vGridLines.add(vGridLine);
             }
