@@ -7,9 +7,7 @@ import io.reactivex.Observable;
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import io.reactivex.subjects.PublishSubject;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
 import javafx.geometry.Point2D;
-import pl.pkrysztofiak.gridview.commons.Line2D;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class GridVLineModel {
@@ -44,16 +42,8 @@ public class GridVLineModel {
         return behaviour.getRatioX();
     }
     
-    public ObservableSet<Line2D> getVLines() {
-        return behaviour.getVLines();
-    }
-    
     public ObservableList<PanelVLineModel> getPanelsVLines() {
         return behaviour.getPanelsVLines();
-    }
-    
-    public Observable<Line2D> vLineAddedObservable() {
-        return behaviour.vLineAddedObservable;
     }
     
     public Observable<PanelVLineModel> panelVLineAddedObservable() {
@@ -62,10 +52,6 @@ public class GridVLineModel {
     
     public Observable<PanelVLineModel> panelVLineRemovedObservable() {
         return behaviour.panelVLineRemovedObservable;
-    }
-    
-    public Observable<Line2D> vLineRemovedObservable() {
-        return behaviour.vLineRemovedObservable;
     }
     
     public Observable<Double> ratioXObservable() {

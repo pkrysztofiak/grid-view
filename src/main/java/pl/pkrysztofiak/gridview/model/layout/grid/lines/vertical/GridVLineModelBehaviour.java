@@ -2,9 +2,7 @@ package pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 import io.reactivex.Observable;
@@ -13,7 +11,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
 import javafx.collections.transformation.SortedList;
 import javafx.geometry.Point2D;
 import pl.pkrysztofiak.gridview.commons.Line2D;
@@ -43,18 +40,10 @@ public class GridVLineModelBehaviour {
     public final Observable<PanelVLineModel> panelVLineAddedObservable = JavaFxObservable.additionsOf(panelsVLines);
     public final Observable<PanelVLineModel> panelVLineRemovedObservable = JavaFxObservable.removalsOf(panelsVLines);
      
-    private final ObservableSet<Line2D> vLines = FXCollections.observableSet();
-    private final ObservableSet<Line2D> unmodifiableVLines = FXCollections.unmodifiableObservableSet(vLines);
-    public final Observable<Line2D> vLineAddedObservable = JavaFxObservable.additionsOf(vLines);
-    public final Observable<Line2D> vLineRemovedObservable = JavaFxObservable.removalsOf(vLines);
-    
-    private final Map<PanelModel, Line2D> panelToLine = new HashMap<>();
-    
     private final List<PanelModel> dragPanels = new ArrayList<>();
     
     {
         panelAddedObservable.subscribe(this::onPanelAdded);
-        panelRemovedObservable.subscribe(this::onPanelRemoved);
     }
     
     public GridVLineModelBehaviour(double ratioX, ObservableList<GridVLineModel> vGridLines, PanelModel... panels) {
@@ -67,10 +56,6 @@ public class GridVLineModelBehaviour {
         ratioXProperty.set(ratioX);
         this.gridVLines = vGridLines;
         panels.stream().forEach(this::onAddPanelRequest);
-    }
-    
-    public ObservableSet<Line2D> getVLines() {
-        return unmodifiableVLines;
     }
     
     public ObservableList<PanelVLineModel> getPanelsVLines() {
@@ -86,6 +71,7 @@ public class GridVLineModelBehaviour {
     }
     
     private void onPanelAdded(PanelModel panel) {
+        //TODO przepisać w wytwrzanie w vLine
         if (panel.getRatioMinX().equals(ratioXProperty.get())) {
             ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(panel::setRatioMinX);
             panel.ratioMinXObservable.filter(panelMinX -> !panelMinX.equals(ratioXProperty.get())).takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(ratioMinX -> panels.remove(panel));
@@ -101,9 +87,6 @@ public class GridVLineModelBehaviour {
         panel.ratioMinYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(vLine::setStartY);
         panel.ratioMaxYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(vLine::setEndY);
         
-        panelToLine.put(panel, vLine);
-        vLines.add(vLine);
-        
         PanelVLineModel panelVLine = createPanelVLineModel(panel);
         panelsVLines.add(panelVLine);
         panelRemovedObservable.filter(panel::equals).subscribe(panelRemoved -> panelsVLines.remove(panelVLine));
@@ -114,11 +97,6 @@ public class GridVLineModelBehaviour {
         panel.ratioMinYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(panelVLine::setRationMinY);
         panel.ratioMaxYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(panelVLine::setRationMaxY);
         return panelVLine;
-    }
-    
-    private void onPanelRemoved(PanelModel panel) {
-        Line2D line = panelToLine.remove(panel);
-        vLines.remove(line);
     }
     
     void onStartDrag(Point2D point) {
