@@ -1,19 +1,15 @@
 package pl.pkrysztofiak.gridview.view.layout.grid.lines.vertical;
 
-import java.util.concurrent.TimeUnit;
-
 import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
-import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import pl.pkrysztofiak.gridview.commons.Line2D;
 import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.GridVLineModel;
 import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.PanelVLineModel;
 import pl.pkrysztofiak.gridview.view.layout.grid.GridPanelsView;
@@ -44,14 +40,8 @@ public class GridVLineView extends Pane {
         this.gridPanelsView = panelsView;
         Bindings.bindContent(getChildren(), lines);
 
-        Observable.fromIterable(gridVLineModel.getPanelsVLines()).subscribe(panelVLineModel -> {
-            
-        });
-        
-        
-        
-        Observable.fromIterable(gridVLineModel.getVLines()).delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVLineAdded);
-        gridVLineModel.vLineAddedObservable().delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVLineAdded);
+        Observable.fromIterable(gridVLineModel.getPanelsVLines()).subscribe(this::onPanelVLineModelAdded);
+        gridVLineModel.panelVLineAddedObservable().subscribe(this::onPanelVLineModelAdded);
         
         Observable.combineLatest(gridVLineModel.ratioXObservable(), panelsView.widthObservable, (ratioX, width) -> ratioX * width)
         .subscribe(x -> setLayoutX(x));
@@ -66,37 +56,24 @@ public class GridVLineView extends Pane {
     }
     
     private void onPanelVLineModelAdded(PanelVLineModel panelVLineModel) {
-        Line line = new Line();
-        line.setStroke(Color.GREEN);
-        line.setStrokeWidth(8.);
-
-        lines.add(line);
-        
-        gridPanelsView.heightObservable.subscribe(height -> {
-            line.setStartY(height * panelVLineModel.getRatioMinY());
-            line.setEndY(height * panelVLineModel.getRatioMaxY());
+        Platform.runLater(() -> {
+            PanelVLineView panelVLineView = new PanelVLineView(panelVLineModel);
+            
+            lines.add(panelVLineView);
+            
+            //TODO dopisać takeUntil()
+            gridPanelsView.heightObservable.subscribe(height -> {
+                panelVLineView.setStartY(height * panelVLineModel.getRatioMinY());
+                panelVLineView.setEndY(height * panelVLineModel.getRatioMaxY());
+            });
+            
+            gridVLineModel.panelVLineRemovedObservable().filter(panelVLineModel::equals).subscribe(removedPanelVLineModel -> lines.remove(panelVLineView));
         });
     }
+    
     
     private void onDragStarted(Point2D screenPoint) {
         Point2D point = gridPanelsView.screenToLocal(screenPoint);
         gridVLineModel.startDrag(new Point2D(point.getX() / gridPanelsView.getWidth(), point.getY() / gridPanelsView.getHeight()));
     }
-    
-    private void onVLineAdded(Line2D modelLine) {
-        Line line = new Line();
-        line.setStroke(Color.RED);
-        line.setStrokeWidth(8);
-        lines.add(line);
-        
-        gridVLineModel.vLineRemovedObservable().filter(modelLine::equals).subscribe(removedModelLine -> {
-            lines.remove(line);
-        });
-        
-        gridPanelsView.heightObservable.subscribe(height -> {
-            line.setStartY(height * modelLine.getStartY());
-            line.setEndY(height * modelLine.getEndY());
-        });
-    }
-    
 }
