@@ -1,16 +1,15 @@
 package pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
+import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import io.reactivex.subjects.PublishSubject;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
@@ -19,16 +18,20 @@ import javafx.geometry.Point2D;
 import pl.pkrysztofiak.gridview.commons.Line2D;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
-public class VGridLineModel {
+public class Behaviour {
 
+    public final PublishSubject<PanelModel> addPanelRequest = PublishSubject.create();
+    public final PublishSubject<Point2D> startDragRequest = PublishSubject.create();
+    public final PublishSubject<Double> dragRequest = PublishSubject.create();
+    
     private final ObservableList<VGridLineModel> vGridLines;
     
-    private final ObjectProperty<Double> ratioXProperty = new SimpleObjectProperty<>();
-    public final Observable<Double> ratioXObservable = JavaFxObservable.valuesOf(ratioXProperty);
+    private final ReadOnlyObjectWrapper<Double> ratioXProperty = new ReadOnlyObjectWrapper<>();
+    private final Observable<Double> ratioXObservable = JavaFxObservable.valuesOf(ratioXProperty);
     
     private final ObservableList<PanelModel> panels = FXCollections.observableArrayList();
-    private final Observable<PanelModel> panelAddedObservable = JavaFxObservable.additionsOf(panels); 
-    private final Observable<PanelModel> panelRemovedObservable = JavaFxObservable.removalsOf(panels);
+    private final Observable<PanelModel> panelAddedObservable = JavaFxObservable.additionsOf(panels);
+    private final Observable<PanelModel> panelRemovedObservable = JavaFxObservable.additionsOf(panels);
     
     private final SortedList<PanelModel> sortedPanels = new SortedList<>(panels, (panelModel1, panelModel2) -> {
         int result = panelModel1.getRatioMinY().compareTo(panelModel2.getRatioMinY());
@@ -37,67 +40,52 @@ public class VGridLineModel {
         }
         return result;
     });
+
+    private final ObservableSet<Line2D> vLines = FXCollections.observableSet();
+    private final ObservableSet<Line2D> unmodifiableVLines = FXCollections.unmodifiableObservableSet(vLines);
     
     private final List<PanelModel> dragPanels = new ArrayList<>();
-
-    private final Map<PanelModel, Line2D> panelToLine = new HashMap<>();
-    private final ObservableSet<Line2D> lines = FXCollections.observableSet();
-    public final Observable<Line2D> modelLineAddedObservable = JavaFxObservable.additionsOf(lines);
-    public final Observable<Line2D> modelLineRemovedObservable = JavaFxObservable.removalsOf(lines);
-    
-    public final PublishSubject<Double> dragPublishable = PublishSubject.create();
     
     {
-        panelAddedObservable.subscribe(this::onPanelAdded);
-        panelRemovedObservable.subscribe(this::onPanelRemoved);
-        dragPublishable.subscribe(this::onDrag);
+        //TODO przepisać to single
+        addPanelRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onAddPanelRequest);
+        panelAddedObservable.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onPanelAdded);
+        startDragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onStartDrag);
+        dragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onDrag);
     }
     
-    public VGridLineModel(double ratioX, ObservableList<VGridLineModel> vGridLines) {
-        this.vGridLines = vGridLines;
+    public Behaviour(double ratioX, ObservableList<VGridLineModel> vGridLines, PanelModel... panels) {
         ratioXProperty.set(ratioX);
+        this.vGridLines = vGridLines;
+        Stream.of(panels).forEach(addPanelRequest::onNext);
     }
     
-    public Double getRatioX() {
-        return ratioXProperty.get();
+    public ObservableSet<Line2D> getVLines() {
+        return unmodifiableVLines;
     }
-    
-    public void add(PanelModel panel) {
+
+    private void onAddPanelRequest(PanelModel panel) {
         panels.add(panel);
-    }
-    
-    public void addAll(Collection<PanelModel> panels) {
-        this.panels.addAll(panels);
-    }
-    
-    private void onPanelRemoved(PanelModel panel) {
-        Line2D line = panelToLine.remove(panel);
-        lines.remove(line);
     }
     
     private void onPanelAdded(PanelModel panel) {
         if (panel.getRatioMinX().equals(ratioXProperty.get())) {
-            ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(x -> panel.ratioMinXProperty.set(x));
-            panel.ratioMinXObservable.filter(panelMinX -> !panelMinX.equals(ratioXProperty.get())).takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(ratioMinX -> panels.remove(panel));
+            ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(panel::setRatioMinX);
         } else if (panel.getRatioMaxX().equals(ratioXProperty.get())) {
-            ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(x -> panel.ratioMaxXProperty.set(x));
-            panel.ratioMaxXObservable.filter(panelMaxX -> !panelMaxX.equals(ratioXProperty.get())).takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(ratioMaxX -> panels.remove(panel));
+            ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(panel::setRatioMaxX);
         } else {
             throw new RuntimeException();
         }
-        Line2D line = new Line2D(0, panel.getRatioMinY(), 0, panel.getRatioMaxY());
-        panel.ratioMinYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setStartY);
-        panel.ratioMaxYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(line::setEndY);
+        Observable.merge(panel.ratioMinXObservable, panel.ratioMaxXObservable).filter(panelRatioX -> !panelRatioX.equals(ratioXProperty.get())).takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(panelRatioX -> panels.remove(panel));
         
-        panelToLine.put(panel, line);
-        lines.add(line);
+        Line2D vLine = new Line2D(0, panel.getRatioMinY(), 0, panel.getRatioMaxY());
+        panel.ratioMinYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(vLine::setStartY);
+        panel.ratioMaxYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(vLine::setEndY);
+        
+        vLines.add(vLine);
     }
     
-    public ObservableSet<Line2D> getLines() {
-        return lines;
-    }
-    
-    public void startDrag(Point2D point) {
+    private void onStartDrag(Point2D point) {
         dragPanels.clear();
         double ratioY = point.getY();
         sortedPanels.stream().filter(panel -> ratioY >= panel.getRatioMinY() && ratioY <= panel.getRatioMaxY()).findFirst().ifPresent(selectedPanel -> {
