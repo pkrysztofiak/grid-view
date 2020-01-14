@@ -43,23 +43,18 @@ public class VGridLineView extends Pane {
         this.panelsView = panelsView;
         Bindings.bindContent(getChildren(), lines);
 
-//        vGridLineModel.getLines().forEach(this::onLineAdded);
         Observable.fromIterable(vGridLineModel.getVLines()).delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVLineAdded);
-//        vGridLineModel.modelLineAddedObservable.subscribe(this::onVLineAdded);
         vGridLineModel.vLineAddedObservable().delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVLineAdded);
         
         
-        Observable.combineLatest(vGridLineModel.ratioXObservable(), panelsView.widthObservable, (ratioX, width) -> ratioX * width).subscribe(x -> {
-            System.out.println("setLayoutX=" + x);
-            setLayoutX(x);
-        });
+        Observable.combineLatest(vGridLineModel.ratioXObservable(), panelsView.widthObservable, (ratioX, width) -> ratioX * width)
+        .subscribe(x -> setLayoutX(x));
         
         prefHeightProperty().bind(panelsView.heightProperty());
         
         pressedXObservable.switchMap(pressedX -> Observable.combineLatest(draggedXObservable, Observable.just(vGridLineModel.getRatioX()), (draggedX, ratioX) -> {
             return ratioX + (draggedX - pressedX) / panelsView.getWidth();
         })).subscribe(newRatioX -> {
-//            vGridLineModel.dragPublishable.onNext(newRatioX);
             vGridLineModel.drag(newRatioX);
         });
     }
@@ -75,9 +70,6 @@ public class VGridLineView extends Pane {
         line.setStrokeWidth(8);
         lines.add(line);
         
-//        vGridLineModel.modelLineRemovedObservable.filter(modelLine::equals).subscribe(removedModelLine -> {
-//            lines.remove(line);
-//        });
         vGridLineModel.vLineRemovedObservable().filter(modelLine::equals).subscribe(removedModelLine -> {
             lines.remove(line);
         });
