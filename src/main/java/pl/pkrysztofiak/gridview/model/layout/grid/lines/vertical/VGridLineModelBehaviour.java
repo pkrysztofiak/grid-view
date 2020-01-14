@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
-import io.reactivex.subjects.PublishSubject;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -22,12 +21,8 @@ import javafx.geometry.Point2D;
 import pl.pkrysztofiak.gridview.commons.Line2D;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
-public class Behaviour {
+public class VGridLineModelBehaviour {
 
-//    public final PublishSubject<PanelModel> addPanelRequest = PublishSubject.create();
-    public final PublishSubject<Point2D> startDragRequest = PublishSubject.create();
-    public final PublishSubject<Double> dragRequest = PublishSubject.create();
-    
     private final ObservableList<VGridLineModel> vGridLines;
     
     private final ObjectProperty<Double> ratioXProperty = new SimpleObjectProperty<>();
@@ -59,17 +54,17 @@ public class Behaviour {
 //        addPanelRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onAddPanelRequest);
         panelAddedObservable.subscribe(this::onPanelAdded);
 //        startDragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onStartDrag);
-        dragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onDrag);
+//        dragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onDrag);
         panelRemovedObservable.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onPanelRemoved);
     }
     
-    public Behaviour(double ratioX, ObservableList<VGridLineModel> vGridLines, PanelModel... panels) {
+    public VGridLineModelBehaviour(double ratioX, ObservableList<VGridLineModel> vGridLines, PanelModel... panels) {
         ratioXProperty.set(ratioX);
         this.vGridLines = vGridLines;
         Stream.of(panels).forEach(this::onAddPanelRequest);
     }
     
-    public Behaviour(double ratioX, ObservableList<VGridLineModel> vGridLines, Collection<PanelModel> panels) {
+    public VGridLineModelBehaviour(double ratioX, ObservableList<VGridLineModel> vGridLines, Collection<PanelModel> panels) {
         ratioXProperty.set(ratioX);
         this.vGridLines = vGridLines;
         panels.stream().forEach(this::onAddPanelRequest);
@@ -139,7 +134,7 @@ public class Behaviour {
         });
     }
     
-    private void onDrag(double ratioX) {
+    void onDrag(double ratioX) {
         if (dragPanels.isEmpty()) {
             throw new RuntimeException();
         }

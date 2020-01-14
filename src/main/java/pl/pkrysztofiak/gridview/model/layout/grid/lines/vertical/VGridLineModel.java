@@ -14,24 +14,26 @@ import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class VGridLineModel {
 
-    private final Behaviour behaviour;
+    private final VGridLineModelBehaviour behaviour;
     
     private final PublishSubject<PanelModel> addPanelRequest = PublishSubject.create();
     private final PublishSubject<Point2D> startDragRequest = PublishSubject.create();
+    private final PublishSubject<Double> dragRequest = PublishSubject.create();
     
     public VGridLineModel(double ratioX, ObservableList<VGridLineModel> vGridLines, PanelModel... panels) {
-        behaviour = new Behaviour(ratioX, vGridLines, panels);
+        behaviour = new VGridLineModelBehaviour(ratioX, vGridLines, panels);
         initBehaviour();
     }
     
     public VGridLineModel(double ratioX, ObservableList<VGridLineModel> vGridLines, List<PanelModel> panels) {
-        behaviour = new Behaviour(ratioX, vGridLines, panels);
+        behaviour = new VGridLineModelBehaviour(ratioX, vGridLines, panels);
         initBehaviour();
     }
     
     private void initBehaviour() {
         addPanelRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(behaviour::onAddPanelRequest);
         startDragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(behaviour::onStartDrag);
+        dragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(behaviour::onDrag);
     }
             
     public void add(PanelModel panel) {
@@ -60,10 +62,9 @@ public class VGridLineModel {
     
     public void startDrag(Point2D point) {
         startDragRequest.onNext(point);
-//        behaviour.startDragRequest.onNext(point);
     }
     
     public void drag(double newRatioX) {
-        behaviour.dragRequest.onNext(newRatioX);
+        dragRequest.onNext(newRatioX);
     }
 }
