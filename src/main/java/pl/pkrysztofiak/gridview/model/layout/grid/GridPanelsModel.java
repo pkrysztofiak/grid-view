@@ -7,9 +7,9 @@ import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import pl.pkrysztofiak.gridview.model.layout.grid.lines.VGridLineModel;
+import pl.pkrysztofiak.gridview.model.layout.grid.lines.VGridLinesModel;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
-import pl.pkrysztofiak.gridview.model.panels.grid.VGridLineModel;
-import pl.pkrysztofiak.gridview.model.panels.grid.VGridLinesModel;
 
 public class GridPanelsModel {
 

@@ -1,4 +1,4 @@
-package pl.pkrysztofiak.gridview.model.panels.grid;
+package pl.pkrysztofiak.gridview.model.layout.grid.lines;
 
 import java.util.Optional;
 
