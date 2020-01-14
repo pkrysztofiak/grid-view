@@ -26,8 +26,6 @@ public class VGridLineModel {
     private final ObjectProperty<Double> ratioXProperty = new SimpleObjectProperty<>();
     public final Observable<Double> ratioXObservable = JavaFxObservable.valuesOf(ratioXProperty);
     
-//    public final PublishSubject<VGridLineModel> addVLineRequest = PublishSubject.create();
-    
     private final ObservableList<PanelModel> panels = FXCollections.observableArrayList();
     private final Observable<PanelModel> panelAddedObservable = JavaFxObservable.additionsOf(panels); 
     private final Observable<PanelModel> panelRemovedObservable = JavaFxObservable.removalsOf(panels);
@@ -140,7 +138,6 @@ public class VGridLineModel {
             VGridLineModel newVGridLine = new VGridLineModel(ratioXProperty.get(), null);
             newVGridLine.addAll(panelsToRemove);
             vGridLines.add(newVGridLine);
-//            addVLineRequest.onNext(newVGridLine);
         }
     }
 }
