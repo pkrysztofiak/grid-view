@@ -1,4 +1,4 @@
-package pl.pkrysztofiak.gridview.view.layout.grid.lines;
+package pl.pkrysztofiak.gridview.view.layout.grid.lines.vertical;
 
 import java.util.concurrent.TimeUnit;
 

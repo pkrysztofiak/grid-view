@@ -48,8 +48,20 @@ public class GridVLineModel {
         return behaviour.getVLines();
     }
     
+    public ObservableList<PanelVLineModel> getPanelsVLines() {
+        return behaviour.getPanelsVLines();
+    }
+    
     public Observable<Line2D> vLineAddedObservable() {
         return behaviour.vLineAddedObservable;
+    }
+    
+    public Observable<PanelVLineModel> panelVLineAddedObservable() {
+        return behaviour.panelVLineAddedObservable;
+    }
+    
+    public Observable<PanelVLineModel> panelVLineRemovedObservable() {
+        return behaviour.panelVLineRemovedObservable;
     }
     
     public Observable<Line2D> vLineRemovedObservable() {

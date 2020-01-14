@@ -11,7 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import pl.pkrysztofiak.gridview.model.layout.grid.GridPanelsModel;
 import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.GridVLineModel;
-import pl.pkrysztofiak.gridview.view.layout.grid.lines.GridVLineView;
+import pl.pkrysztofiak.gridview.view.layout.grid.lines.vertical.GridVLineView;
 
 public class GridPanelsView extends Pane {
 

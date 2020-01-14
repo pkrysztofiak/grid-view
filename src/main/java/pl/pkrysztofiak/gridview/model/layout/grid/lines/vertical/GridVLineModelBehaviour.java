@@ -38,8 +38,11 @@ public class GridVLineModelBehaviour {
         return result;
     });
 
-    private final ObservableList<PanelVLineModel> vPanelLines = FXCollections.observableArrayList();
-    
+    private final ObservableList<PanelVLineModel> panelsVLines = FXCollections.observableArrayList();
+    private final ObservableList<PanelVLineModel> unmodifiablePanelsVLines = FXCollections.unmodifiableObservableList(panelsVLines);
+    public final Observable<PanelVLineModel> panelVLineAddedObservable = JavaFxObservable.additionsOf(panelsVLines);
+    public final Observable<PanelVLineModel> panelVLineRemovedObservable = JavaFxObservable.removalsOf(panelsVLines);
+     
     private final ObservableSet<Line2D> vLines = FXCollections.observableSet();
     private final ObservableSet<Line2D> unmodifiableVLines = FXCollections.unmodifiableObservableSet(vLines);
     public final Observable<Line2D> vLineAddedObservable = JavaFxObservable.additionsOf(vLines);
@@ -70,6 +73,10 @@ public class GridVLineModelBehaviour {
         return unmodifiableVLines;
     }
     
+    public ObservableList<PanelVLineModel> getPanelsVLines() {
+        return unmodifiablePanelsVLines;
+    }
+    
     public Double getRatioX() {
         return ratioXProperty.get();
     }
@@ -96,6 +103,17 @@ public class GridVLineModelBehaviour {
         
         panelToLine.put(panel, vLine);
         vLines.add(vLine);
+        
+        PanelVLineModel panelVLine = createPanelVLineModel(panel);
+        panelsVLines.add(panelVLine);
+        panelRemovedObservable.filter(panel::equals).subscribe(panelRemoved -> panelsVLines.remove(panelVLine));
+    }
+    
+    private PanelVLineModel createPanelVLineModel(PanelModel panel) {
+        PanelVLineModel panelVLine = new PanelVLineModel();
+        panel.ratioMinYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(panelVLine::setRationMinY);
+        panel.ratioMaxYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(panelVLine::setRationMaxY);
+        return panelVLine;
     }
     
     private void onPanelRemoved(PanelModel panel) {
