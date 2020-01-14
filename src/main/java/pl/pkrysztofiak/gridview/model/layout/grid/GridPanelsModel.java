@@ -1,4 +1,4 @@
-package pl.pkrysztofiak.gridview.model.panels;
+package pl.pkrysztofiak.gridview.model.layout.grid;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -7,10 +7,11 @@ import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 import pl.pkrysztofiak.gridview.model.panels.grid.VGridLineModel;
 import pl.pkrysztofiak.gridview.model.panels.grid.VGridLinesModel;
 
-public class PanelsModel {
+public class GridPanelsModel {
 
     private final ObservableList<PanelModel> panels = FXCollections.observableArrayList();
     public final Observable<PanelModel> panelAddedObservable = JavaFxObservable.additionsOf(panels);
@@ -21,7 +22,7 @@ public class PanelsModel {
         panelAddedObservable.subscribe(this::onPanelAdded);
     }
     
-    public PanelsModel(PanelModel... panels) {
+    public GridPanelsModel(PanelModel... panels) {
         this.panels.setAll(panels);
     }
     
