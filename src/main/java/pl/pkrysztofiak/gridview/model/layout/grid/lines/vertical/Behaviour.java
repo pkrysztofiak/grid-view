@@ -24,7 +24,7 @@ import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class Behaviour {
 
-    public final PublishSubject<PanelModel> addPanelRequest = PublishSubject.create();
+//    public final PublishSubject<PanelModel> addPanelRequest = PublishSubject.create();
     public final PublishSubject<Point2D> startDragRequest = PublishSubject.create();
     public final PublishSubject<Double> dragRequest = PublishSubject.create();
     
@@ -56,9 +56,9 @@ public class Behaviour {
     
     {
         //TODO przepisać to single
-        addPanelRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onAddPanelRequest);
-        panelAddedObservable.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onPanelAdded);
-        startDragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onStartDrag);
+//        addPanelRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onAddPanelRequest);
+        panelAddedObservable.subscribe(this::onPanelAdded);
+//        startDragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onStartDrag);
         dragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onDrag);
         panelRemovedObservable.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onPanelRemoved);
     }
@@ -66,13 +66,13 @@ public class Behaviour {
     public Behaviour(double ratioX, ObservableList<VGridLineModel> vGridLines, PanelModel... panels) {
         ratioXProperty.set(ratioX);
         this.vGridLines = vGridLines;
-        Stream.of(panels).forEach(addPanelRequest::onNext);
+        Stream.of(panels).forEach(this::onAddPanelRequest);
     }
     
     public Behaviour(double ratioX, ObservableList<VGridLineModel> vGridLines, Collection<PanelModel> panels) {
         ratioXProperty.set(ratioX);
         this.vGridLines = vGridLines;
-        panels.stream().forEach(addPanelRequest::onNext);
+        panels.stream().forEach(this::onAddPanelRequest);
     }
     
     public ObservableSet<Line2D> getVLines() {
@@ -83,7 +83,7 @@ public class Behaviour {
         return ratioXProperty.get();
     }
 
-    private void onAddPanelRequest(PanelModel panel) {
+    public void onAddPanelRequest(PanelModel panel) {
         panels.add(panel);
     }
     
@@ -112,7 +112,7 @@ public class Behaviour {
         vLines.remove(line);
     }
     
-    private void onStartDrag(Point2D point) {
+    void onStartDrag(Point2D point) {
         dragPanels.clear();
         double ratioY = point.getY();
         sortedPanels.stream().filter(panel -> ratioY >= panel.getRatioMinY() && ratioY <= panel.getRatioMaxY()).findFirst().ifPresent(selectedPanel -> {
