@@ -11,11 +11,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import pl.pkrysztofiak.gridview.model.layout.grid.GridPanelsModel;
 import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.GridVLineModel;
-import pl.pkrysztofiak.gridview.view.layout.grid.lines.VGridLineView;
+import pl.pkrysztofiak.gridview.view.layout.grid.lines.GridVLineView;
 
 public class GridPanelsView extends Pane {
 
-    private final ObservableList<VGridLineView> vGridLines = FXCollections.observableArrayList();
+    private final ObservableList<GridVLineView> vGridLines = FXCollections.observableArrayList();
     public final Observable<Double> widthObservable = JavaFxObservable.valuesOf(widthProperty()).map(Number::doubleValue);
     public final Observable<Double> heightObservable = JavaFxObservable.valuesOf(heightProperty()).map(Number::doubleValue);
     
@@ -27,7 +27,7 @@ public class GridPanelsView extends Pane {
     }
 
     private void onVGridLineModelAdded(GridVLineModel vGridLineModel) {
-        VGridLineView vGridLine = new VGridLineView(vGridLineModel, this);
+        GridVLineView vGridLine = new GridVLineView(vGridLineModel, this);
         vGridLines.add(vGridLine);
     }
 }

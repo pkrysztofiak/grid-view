@@ -38,7 +38,7 @@ public class GridVLineModelBehaviour {
         return result;
     });
 
-    private final ObservableList<VPanelLineModel> vPanelLines = FXCollections.observableArrayList();
+    private final ObservableList<PanelVLineModel> vPanelLines = FXCollections.observableArrayList();
     
     private final ObservableSet<Line2D> vLines = FXCollections.observableSet();
     private final ObservableSet<Line2D> unmodifiableVLines = FXCollections.unmodifiableObservableSet(vLines);

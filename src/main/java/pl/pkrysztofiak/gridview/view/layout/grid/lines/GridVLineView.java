@@ -17,7 +17,7 @@ import pl.pkrysztofiak.gridview.commons.Line2D;
 import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.GridVLineModel;
 import pl.pkrysztofiak.gridview.view.layout.grid.GridPanelsView;
 
-public class VGridLineView extends Pane {
+public class GridVLineView extends Pane {
     
     private final GridPanelsView panelsView;
     private final GridVLineModel vGridLineModel;
@@ -38,7 +38,7 @@ public class VGridLineView extends Pane {
         mousePressedObservable.switchMap(pressed -> mouseDraggedObservable.map(dragged -> pressed).take(1)).subscribe(this::onDragStarted);
     }
     
-    public VGridLineView(GridVLineModel vGridLineModel, GridPanelsView panelsView) {
+    public GridVLineView(GridVLineModel vGridLineModel, GridPanelsView panelsView) {
         this.vGridLineModel = vGridLineModel;
         this.panelsView = panelsView;
         Bindings.bindContent(getChildren(), lines);
