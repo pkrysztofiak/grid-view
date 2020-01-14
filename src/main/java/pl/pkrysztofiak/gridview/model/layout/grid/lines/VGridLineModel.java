@@ -21,10 +21,12 @@ import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class VGridLineModel {
 
+    private final ObservableList<VGridLineModel> vGridLines;
+    
     private final ObjectProperty<Double> ratioXProperty = new SimpleObjectProperty<>();
     public final Observable<Double> ratioXObservable = JavaFxObservable.valuesOf(ratioXProperty);
     
-    public final PublishSubject<VGridLineModel> addVLineRequest = PublishSubject.create();
+//    public final PublishSubject<VGridLineModel> addVLineRequest = PublishSubject.create();
     
     private final ObservableList<PanelModel> panels = FXCollections.observableArrayList();
     private final Observable<PanelModel> panelAddedObservable = JavaFxObservable.additionsOf(panels); 
@@ -53,7 +55,8 @@ public class VGridLineModel {
         dragPublishable.subscribe(this::onDrag);
     }
     
-    public VGridLineModel(double ratioX) {
+    public VGridLineModel(double ratioX, ObservableList<VGridLineModel> vGridLines) {
+        this.vGridLines = vGridLines;
         ratioXProperty.set(ratioX);
     }
     
@@ -77,9 +80,7 @@ public class VGridLineModel {
     private void onPanelAdded(PanelModel panel) {
         if (panel.getRatioMinX().equals(ratioXProperty.get())) {
             ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(x -> panel.ratioMinXProperty.set(x));
-            
             panel.ratioMinXObservable.filter(panelMinX -> !panelMinX.equals(ratioXProperty.get())).takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(ratioMinX -> panels.remove(panel));
-            
         } else if (panel.getRatioMaxX().equals(ratioXProperty.get())) {
             ratioXObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(x -> panel.ratioMaxXProperty.set(x));
             panel.ratioMaxXObservable.filter(panelMaxX -> !panelMaxX.equals(ratioXProperty.get())).takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(ratioMaxX -> panels.remove(panel));
@@ -136,9 +137,10 @@ public class VGridLineModel {
             panelsToRemove.removeAll(dragPanels);
             System.out.println("panelsToRemove=" + panelsToRemove);
             panels.removeAll(panelsToRemove);
-            VGridLineModel newVGridLine = new VGridLineModel(ratioXProperty.get());
+            VGridLineModel newVGridLine = new VGridLineModel(ratioXProperty.get(), null);
             newVGridLine.addAll(panelsToRemove);
-            addVLineRequest.onNext(newVGridLine);
+            vGridLines.add(newVGridLine);
+//            addVLineRequest.onNext(newVGridLine);
         }
     }
 }

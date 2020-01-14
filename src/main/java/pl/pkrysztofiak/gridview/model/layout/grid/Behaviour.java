@@ -3,6 +3,8 @@ package pl.pkrysztofiak.gridview.model.layout.grid;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import io.reactivex.Observable;
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import io.reactivex.subjects.PublishSubject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +18,9 @@ public class Behaviour {
     private final ObservableList<PanelModel> panels = FXCollections.observableArrayList();
     private final ObservableList<PanelModel> unmodifiablePanels = FXCollections.unmodifiableObservableList(panels);
  
-    private final ObservableList<VGridLineModel> vLines = FXCollections.observableArrayList(); 
+    private final ObservableList<VGridLineModel> vGridLines = FXCollections.observableArrayList();
+    private final ObservableList<VGridLineModel> unmodifiableVGridLines = FXCollections.unmodifiableObservableList(vGridLines);
+    public final Observable<VGridLineModel> vGridLineAdded = JavaFxObservable.additionsOf(vGridLines);
     
     {
         addPanelRequest.subscribe(this::onPanelAdded);
@@ -26,19 +30,26 @@ public class Behaviour {
         return unmodifiablePanels;
     }
     
+    public ObservableList<VGridLineModel> getVGridLines() {
+        return unmodifiableVGridLines;
+    }
+    
     private void onPanelAdded(PanelModel panel) {
-        Stream.of(panel.getRatioMinX(), panel.getRatioMinY()).forEach(x -> {
-            Optional<VGridLineModel> optional = findVLine(x);
+        Stream.of(panel.getRatioMinX(), panel.getRatioMaxX()).forEach(ratioX -> {
+            Optional<VGridLineModel> optional = findVGridLine(ratioX);
             if (optional.isPresent()) {
-                VGridLineModel vLine = optional.get();
-                vLine.add(panel);
+                VGridLineModel vGridLine = optional.get();
+                vGridLine.add(panel);
             } else {
-                
+                VGridLineModel vGridLine = new VGridLineModel(ratioX, vGridLines);
+                vGridLine.add(panel);
+                vGridLines.add(vGridLine);
             }
         });
     }
     
-    private Optional<VGridLineModel> findVLine(double x) {
-        return vLines.stream().filter(vLine -> vLine.getRatioX().equals(x)).findFirst();
+    private Optional<VGridLineModel> findVGridLine(double x) {
+        return vGridLines.stream().filter(vGridLine -> vGridLine.getRatioX().equals(x)).findFirst();
     }
+    
 }

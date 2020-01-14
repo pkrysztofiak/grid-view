@@ -22,8 +22,8 @@ public class GridPanelsView extends Pane {
     public GridPanelsView(GridPanelsModel panelsModel) {
         Bindings.bindContent(getChildren(), vGridLines);
 
-        Observable.fromIterable(panelsModel.vGridLines.vGridLines).delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVGridLineModelAdded);
-        panelsModel.vGridLines.vGridLineAddedObservable.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVGridLineModelAdded);
+        Observable.fromIterable(panelsModel.getVGridLines()).delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVGridLineModelAdded);
+        panelsModel.vGridLineAdded().delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::onVGridLineModelAdded);
     }
 
     private void onVGridLineModelAdded(VGridLineModel vGridLineModel) {
