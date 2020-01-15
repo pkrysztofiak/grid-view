@@ -32,9 +32,7 @@ public class GridVLineModelBehaviour {
     private final List<VLineModel> dragVLines = new ArrayList<>();
     
     public GridVLineModelBehaviour(double ratioX, ObservableList<GridVLineModel> vGridLines, PanelModel... panels) {
-        ratioXProperty.set(ratioX);
-        this.gridVLines = vGridLines;
-        Stream.of(panels).forEach(this::onPanelAdded);
+        this(ratioX, vGridLines, Stream.of(panels).collect(Collectors.toList()));
     }
     
     public GridVLineModelBehaviour(double ratioX, ObservableList<GridVLineModel> vGridLines, Collection<PanelModel> panels) {
