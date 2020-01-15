@@ -40,23 +40,20 @@ public class GridVLineView extends Pane {
         this.gridPanelsView = panelsView;
         Bindings.bindContent(getChildren(), lines);
 
-        Observable.fromIterable(gridVLineModel.getVLines()).subscribe(this::onPanelVLineModelAdded);
-        gridVLineModel.vLineAddedObservable.subscribe(this::onPanelVLineModelAdded);
+        Observable.fromIterable(gridVLineModel.getVLines()).subscribe(this::onVLineModelAdded);
+        gridVLineModel.vLineAddedObservable.subscribe(this::onVLineModelAdded);
         
         Observable.combineLatest(gridVLineModel.ratioXObservable, panelsView.widthObservable, (ratioX, width) -> ratioX * width)
         .subscribe(x -> setLayoutX(x));
         
         prefHeightProperty().bind(panelsView.heightProperty());
         
-        pressedXObservable.switchMap(pressedX -> Observable.combineLatest(draggedXObservable, Observable.just(gridVLineModel.getRatioX()), (draggedX, ratioX) -> {
-            return ratioX + (draggedX - pressedX) / panelsView.getWidth();
-        })).subscribe(newRatioX -> {
-//            gridVLineModel.drag(newRatioX);
-            gridVLineModel.drag.onNext(newRatioX);
-        });
+        pressedXObservable.switchMap(pressedX -> 
+            Observable.combineLatest(draggedXObservable, Observable.just(gridVLineModel.getRatioX()), (draggedX, ratioX) -> ratioX + (draggedX - pressedX) / panelsView.getWidth()))
+        .subscribe(gridVLineModel.drag::onNext);
     }
     
-    private void onPanelVLineModelAdded(VLineModel panelVLineModel) {
+    private void onVLineModelAdded(VLineModel panelVLineModel) {
         Platform.runLater(() -> {
             VLineView panelVLineView = new VLineView(panelVLineModel);
             
@@ -75,7 +72,6 @@ public class GridVLineView extends Pane {
     
     private void onDragStarted(Point2D screenPoint) {
         Point2D point = gridPanelsView.screenToLocal(screenPoint);
-//        gridVLineModel.startDrag(new Point2D(point.getX() / gridPanelsView.getWidth(), point.getY() / gridPanelsView.getHeight()));
         gridVLineModel.startDrag.onNext(new Point2D(point.getX() / gridPanelsView.getWidth(), point.getY() / gridPanelsView.getHeight()));
     }
 }

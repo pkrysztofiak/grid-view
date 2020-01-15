@@ -51,4 +51,9 @@ public class HLineModel implements Comparable<HLineModel> {
         }
         return result;
     }
+    
+    @Override
+    public String toString() {
+        return "HLine[minX=" + ratioMinXProperty.get() + ", maxX=" + ratioMaxXProperty.get() + "]";
+    }
 }

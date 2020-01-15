@@ -25,7 +25,7 @@ public class GridHLineModel extends GridLineModel {
     
     private final ObservableList<HLineModel> hLines = FXCollections.observableArrayList();
     private final ObservableList<HLineModel> unmodifiableHLines = FXCollections.unmodifiableObservableList(hLines);
-    private final ObservableList<HLineModel> sortedHLines = new SortedList<>(unmodifiableHLines, (vLine1, vLine2) -> vLine1.compareTo(vLine2));
+    private final ObservableList<HLineModel> sortedHLines = new SortedList<>(unmodifiableHLines, (hLine1, hLine2) -> hLine1.compareTo(hLine2));
     public final Observable<HLineModel> hLineAddedObservable = JavaFxObservable.additionsOf(hLines);
     public final Observable<HLineModel> hLineRemovedObservable = JavaFxObservable.removalsOf(hLines);
     
@@ -52,10 +52,13 @@ public class GridHLineModel extends GridLineModel {
     @Override
     protected void addPanel(PanelModel panel) {
         HLineModel hLine = createHLine(panel);
+        System.out.println("panel=" + panel);
+        System.out.println("hLineModel=" + hLine);
         hLines.add(hLine);
     }
     
     private HLineModel createHLine(PanelModel panel) {
+        System.out.println("createHLine");
         HLineModel hLine = new HLineModel(panel);
         Observable<HLineModel> hLineRemoved = hLineRemovedObservable.filter(hLine::equals);
         
@@ -64,10 +67,10 @@ public class GridHLineModel extends GridLineModel {
             panel.ratioMinYObservable.filter(ratioMinY -> !ratioMinY.equals(ratioYProperty.get())).takeUntil(hLineRemoved).subscribe(ratioMinX -> hLines.remove(hLine));
         } else if (panel.getRatioMaxY().equals(ratioYProperty.get())) {
             ratioYObservable.takeUntil(hLineRemoved).subscribe(panel::setRatioMaxY);
-            panel.ratioMaxXObservable.filter(ratioMaxX -> !ratioMaxX.equals(ratioYProperty.get())).takeUntil(hLineRemoved).subscribe(ratioMaxX -> hLines.remove(hLine));
+            panel.ratioMaxYObservable.filter(ratioMaxY -> !ratioMaxY.equals(ratioYProperty.get())).takeUntil(hLineRemoved).subscribe(ratioMaxY -> hLines.remove(hLine));
         }
-        panel.ratioMinYObservable.takeUntil(hLineRemoved).subscribe(hLine::setRatioMinX);
-        panel.ratioMaxYObservable.takeUntil(hLineRemoved).subscribe(hLine::setRationMaxX);
+        panel.ratioMinXObservable.takeUntil(hLineRemoved).subscribe(hLine::setRatioMinX);
+        panel.ratioMaxXObservable.takeUntil(hLineRemoved).subscribe(hLine::setRationMaxX);
         return hLine;
     }
 

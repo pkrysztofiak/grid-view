@@ -31,7 +31,6 @@ public class GridVLineModel extends GridLineModel {
     
     private final List<VLineModel> dragVLines = new ArrayList<>();
     
-    
     public GridVLineModel(double ratioX, ObservableList<GridVLineModel> gridVLines, PanelModel... panels) {
         this(ratioX, gridVLines, Arrays.asList(panels));
     }
