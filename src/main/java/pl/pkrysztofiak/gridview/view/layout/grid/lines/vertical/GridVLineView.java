@@ -58,7 +58,7 @@ public class GridVLineView extends Pane {
     
     private void onPanelVLineModelAdded(VLineModel panelVLineModel) {
         Platform.runLater(() -> {
-            PanelVLineView panelVLineView = new PanelVLineView(panelVLineModel);
+            VLineView panelVLineView = new VLineView(panelVLineModel);
             
             lines.add(panelVLineView);
             

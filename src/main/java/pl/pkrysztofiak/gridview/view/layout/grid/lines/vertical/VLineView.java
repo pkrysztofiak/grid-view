@@ -4,14 +4,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.VLineModel;
 
-public class PanelVLineView extends Line {
+public class VLineView extends Line {
 
     {
         setStroke(Color.GREEN);
         setStrokeWidth(8.);
     }
     
-    public PanelVLineView(VLineModel panelVLineModel) {
+    public VLineView(VLineModel panelVLineModel) {
         
     }
 }
