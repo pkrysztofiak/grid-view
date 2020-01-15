@@ -53,19 +53,22 @@ public class GridVLineView extends Pane {
         .subscribe(gridVLineModel.drag::onNext);
     }
     
-    private void onVLineModelAdded(VLineModel panelVLineModel) {
+    private void onVLineModelAdded(VLineModel vLineModel) {
         Platform.runLater(() -> {
-            VLineView panelVLineView = new VLineView(panelVLineModel);
+            VLineView vLineView = new VLineView(vLineModel);
             
-            lines.add(panelVLineView);
+            lines.add(vLineView);
             
             //TODO dopisać takeUntil()
-            gridPanelsView.heightObservable.subscribe(height -> {
-                panelVLineView.setStartY(height * panelVLineModel.getRatioMinY());
-                panelVLineView.setEndY(height * panelVLineModel.getRatioMaxY());
-            });
+            Observable.combineLatest(vLineModel.ratioMinYObservable, gridPanelsView.heightObservable, (ratioMinY, height) -> ratioMinY * height).subscribe(vLineView::setStartY);
+            Observable.combineLatest(vLineModel.ratioMaxYObservable, gridPanelsView.heightObservable, (ratioMaxY, height) -> ratioMaxY * height).subscribe(vLineView::setEndY);
             
-            gridVLineModel.vLineRemovedObservable.filter(panelVLineModel::equals).subscribe(removedPanelVLineModel -> lines.remove(panelVLineView));
+//            gridPanelsView.heightObservable.subscribe(height -> {
+//                vLineView.setStartY(height * vLineModel.getRatioMinY());
+//                vLineView.setEndY(height * vLineModel.getRatioMaxY());
+//            });
+            
+            gridVLineModel.vLineRemovedObservable.filter(vLineModel::equals).subscribe(removedPanelVLineModel -> lines.remove(vLineView));
         });
     }
     

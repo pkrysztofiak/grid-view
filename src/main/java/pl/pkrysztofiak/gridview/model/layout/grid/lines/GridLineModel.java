@@ -16,7 +16,7 @@ public abstract class GridLineModel {
     {
         addPanel.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::addPanel);
         startDrag.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::startDrag);
-        drag.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(this::drag);
+        drag.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(value -> this.drag(value));
     }
     
     protected abstract void addPanel(PanelModel panel);

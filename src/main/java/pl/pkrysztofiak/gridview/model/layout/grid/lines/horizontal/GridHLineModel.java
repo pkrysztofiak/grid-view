@@ -52,8 +52,6 @@ public class GridHLineModel extends GridLineModel {
     @Override
     protected void addPanel(PanelModel panel) {
         HLineModel hLine = createHLine(panel);
-        System.out.println("panel=" + panel);
-        System.out.println("hLineModel=" + hLine);
         hLines.add(hLine);
     }
     
@@ -103,7 +101,7 @@ public class GridHLineModel extends GridLineModel {
     }
 
     @Override
-    protected void drag(double ratioX) {
+    protected void drag(double ratioY) {
         if (dragHLines.isEmpty()) {
             throw new RuntimeException();
         }
@@ -113,7 +111,7 @@ public class GridHLineModel extends GridLineModel {
             hLines.removeAll(hLinesToRemove);
             gridHLines.add(new GridHLineModel(ratioYProperty.get(), gridHLines, hLinesToRemove.stream().map(HLineModel::getPanel).collect(Collectors.toList())));
         }
-        ratioYProperty.set(ratioX);
+        ratioYProperty.set(ratioY);
     }
     
 }

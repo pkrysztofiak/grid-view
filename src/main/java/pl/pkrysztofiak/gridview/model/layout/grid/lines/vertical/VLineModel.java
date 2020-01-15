@@ -1,5 +1,7 @@
 package pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical;
 
+import io.reactivex.Observable;
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
@@ -9,7 +11,10 @@ public class VLineModel implements Comparable<VLineModel> {
     private final PanelModel panel;
     
     private final ObjectProperty<Double> ratioMinYProperty = new SimpleObjectProperty<>();
+    public final Observable<Double> ratioMinYObservable = JavaFxObservable.valuesOf(ratioMinYProperty);
+    
     private final ObjectProperty<Double> ratioMaxYProperty = new SimpleObjectProperty<>();
+    public final Observable<Double> ratioMaxYObservable = JavaFxObservable.valuesOf(ratioMaxYProperty);
     
     public VLineModel(PanelModel panel) {
         this.panel = panel;

@@ -1,5 +1,7 @@
 package pl.pkrysztofiak.gridview.model.layout.grid.lines.horizontal;
 
+import io.reactivex.Observable;
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
@@ -9,7 +11,10 @@ public class HLineModel implements Comparable<HLineModel> {
     private final PanelModel panel;
     
     private final ObjectProperty<Double> ratioMinXProperty = new SimpleObjectProperty<>();
+    public final Observable<Double> ratioMinXObservable = JavaFxObservable.valuesOf(ratioMinXProperty);
+    
     private final ObjectProperty<Double> ratioMaxXProperty = new SimpleObjectProperty<>();
+    public final Observable<Double> ratioMaxXObservable = JavaFxObservable.valuesOf(ratioMaxXProperty);
     
     public HLineModel(PanelModel panel) {
         this.panel = panel;
@@ -24,6 +29,7 @@ public class HLineModel implements Comparable<HLineModel> {
     }
 
     public void setRatioMinX(double value) {
+        System.out.println("setRatioMinX=" + value);
         ratioMinXProperty.set(value);
     }
     

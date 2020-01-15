@@ -49,7 +49,7 @@ public class GridHLineView extends Pane {
         prefWidthProperty().bind(gridPanelsView.widthProperty());
         
         pressedYObservable.switchMap(pressedX -> 
-            Observable.combineLatest(draggedYObservable, Observable.just(gridHLineModel.getRatioY()), (draggedX, ratioX) -> ratioX + (draggedX - pressedX) / gridPanelsView.getWidth()))
+            Observable.combineLatest(draggedYObservable, Observable.just(gridHLineModel.getRatioY()), (draggedX, ratioX) -> ratioX + (draggedX - pressedX) / gridPanelsView.getHeight()))
         .subscribe(gridHLineModel.drag::onNext);
     }
     
@@ -60,10 +60,16 @@ public class GridHLineView extends Pane {
             lines.add(hLineView);
             
             //TODO dopisać takeUntil()
-            gridPanelsView.widthObservable.subscribe(width -> {
-                hLineView.setStartX(width * hLineModel.getRatioMinX());
-                hLineView.setEndX(width * hLineModel.getRatioMaxX());
-            });
+            Observable.combineLatest(hLineModel.ratioMinXObservable, gridPanelsView.widthObservable, (ratioMinX, width) -> ratioMinX * width).subscribe(hLineView::setStartX);
+            Observable.combineLatest(hLineModel.ratioMaxXObservable, gridPanelsView.widthObservable, (ratioMaxX, width) -> ratioMaxX * width).subscribe(hLineView::setEndX);
+            
+//            gridPanelsView.widthObservable.subscribe(width -> {
+//                hLineView.setStartX(width * hLineModel.getRatioMinX());
+//                hLineView.setEndX(width * hLineModel.getRatioMaxX());
+//            });
+            
+            
+            //TODO dopisac tutaj
             
             System.out.println("hlineView=" + hLineView);
             
