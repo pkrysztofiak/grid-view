@@ -42,15 +42,15 @@ public class GridVLineModel {
         return behaviour.getRatioX();
     }
     
-    public ObservableList<PanelVLineModel> getPanelsVLines() {
+    public ObservableList<VLineModel> getPanelsVLines() {
         return behaviour.getPanelsVLines();
     }
     
-    public Observable<PanelVLineModel> panelVLineAddedObservable() {
+    public Observable<VLineModel> panelVLineAddedObservable() {
         return behaviour.panelVLineAddedObservable;
     }
     
-    public Observable<PanelVLineModel> panelVLineRemovedObservable() {
+    public Observable<VLineModel> panelVLineRemovedObservable() {
         return behaviour.panelVLineRemovedObservable;
     }
     

@@ -35,10 +35,10 @@ public class GridVLineModelBehaviour {
         return result;
     });
 
-    private final ObservableList<PanelVLineModel> panelsVLines = FXCollections.observableArrayList();
-    private final ObservableList<PanelVLineModel> unmodifiablePanelsVLines = FXCollections.unmodifiableObservableList(panelsVLines);
-    public final Observable<PanelVLineModel> panelVLineAddedObservable = JavaFxObservable.additionsOf(panelsVLines);
-    public final Observable<PanelVLineModel> panelVLineRemovedObservable = JavaFxObservable.removalsOf(panelsVLines);
+    private final ObservableList<VLineModel> panelsVLines = FXCollections.observableArrayList();
+    private final ObservableList<VLineModel> unmodifiablePanelsVLines = FXCollections.unmodifiableObservableList(panelsVLines);
+    public final Observable<VLineModel> panelVLineAddedObservable = JavaFxObservable.additionsOf(panelsVLines);
+    public final Observable<VLineModel> panelVLineRemovedObservable = JavaFxObservable.removalsOf(panelsVLines);
      
     private final List<PanelModel> dragPanels = new ArrayList<>();
     
@@ -58,7 +58,7 @@ public class GridVLineModelBehaviour {
         panels.stream().forEach(this::onAddPanelRequest);
     }
     
-    public ObservableList<PanelVLineModel> getPanelsVLines() {
+    public ObservableList<VLineModel> getPanelsVLines() {
         return unmodifiablePanelsVLines;
     }
     
@@ -87,13 +87,13 @@ public class GridVLineModelBehaviour {
         panel.ratioMinYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(vLine::setStartY);
         panel.ratioMaxYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(vLine::setEndY);
         
-        PanelVLineModel panelVLine = createPanelVLineModel(panel);
+        VLineModel panelVLine = createPanelVLineModel(panel);
         panelsVLines.add(panelVLine);
         panelRemovedObservable.filter(panel::equals).subscribe(panelRemoved -> panelsVLines.remove(panelVLine));
     }
     
-    private PanelVLineModel createPanelVLineModel(PanelModel panel) {
-        PanelVLineModel panelVLine = new PanelVLineModel();
+    private VLineModel createPanelVLineModel(PanelModel panel) {
+        VLineModel panelVLine = new VLineModel();
         panel.ratioMinYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(panelVLine::setRationMinY);
         panel.ratioMaxYObservable.takeUntil(panelRemovedObservable.filter(panel::equals)).subscribe(panelVLine::setRationMaxY);
         return panelVLine;

@@ -3,15 +3,15 @@ package pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-public class PanelVLineModel {
+public class VLineModel {
 
     private final ObjectProperty<Double> ratioMinYProperty = new SimpleObjectProperty<>();
     private final ObjectProperty<Double> ratioMaxYProperty = new SimpleObjectProperty<>();
 
-    public PanelVLineModel() {
+    public VLineModel() {
     }
     
-    public PanelVLineModel(double ratioMinY, double ratioMaxY) {
+    public VLineModel(double ratioMinY, double ratioMaxY) {
         ratioMinYProperty.set(ratioMinY);
         ratioMaxYProperty.set(ratioMinY);
     }

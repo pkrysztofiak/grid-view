@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.GridVLineModel;
-import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.PanelVLineModel;
+import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.VLineModel;
 import pl.pkrysztofiak.gridview.view.layout.grid.GridPanelsView;
 
 public class GridVLineView extends Pane {
@@ -55,7 +55,7 @@ public class GridVLineView extends Pane {
         });
     }
     
-    private void onPanelVLineModelAdded(PanelVLineModel panelVLineModel) {
+    private void onPanelVLineModelAdded(VLineModel panelVLineModel) {
         Platform.runLater(() -> {
             PanelVLineView panelVLineView = new PanelVLineView(panelVLineModel);
             
