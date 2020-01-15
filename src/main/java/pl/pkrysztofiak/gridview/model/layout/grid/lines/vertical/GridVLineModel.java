@@ -18,6 +18,8 @@ public class GridVLineModel {
     private final PublishSubject<Point2D> startDragRequest = PublishSubject.create();
     private final PublishSubject<Double> dragRequest = PublishSubject.create();
     
+    private final PublishSubject<VLineModel> addVLine = PublishSubject.create();
+    
     public GridVLineModel(double ratioX, ObservableList<GridVLineModel> vGridLines, PanelModel... panels) {
         behaviour = new GridVLineModelBehaviour(ratioX, vGridLines, panels);
         initBehaviour();
@@ -32,10 +34,17 @@ public class GridVLineModel {
         addPanelRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(behaviour::onAddPanelRequest);
         startDragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(behaviour::onStartDrag);
         dragRequest.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(behaviour::onDrag);
+        
+        //NEW
+        addVLine.delay(0, TimeUnit.SECONDS, JavaFxScheduler.platform()).subscribe(behaviour::addVLine);
     }
             
     public void add(PanelModel panel) {
         addPanelRequest.onNext(panel);
+    }
+    
+    public void add(VLineModel vLine) {
+        addVLine.onNext(vLine);
     }
     
     public Double getRatioX() {
@@ -43,15 +52,15 @@ public class GridVLineModel {
     }
     
     public ObservableList<VLineModel> getPanelsVLines() {
-        return behaviour.getPanelsVLines();
+        return behaviour.getVLines();
     }
     
     public Observable<VLineModel> panelVLineAddedObservable() {
-        return behaviour.panelVLineAddedObservable;
+        return behaviour.vLineAddedObservable;
     }
     
     public Observable<VLineModel> panelVLineRemovedObservable() {
-        return behaviour.panelVLineRemovedObservable;
+        return behaviour.vLineRemovedObservable;
     }
     
     public Observable<Double> ratioXObservable() {
