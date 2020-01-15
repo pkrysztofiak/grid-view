@@ -19,7 +19,6 @@ public class PanelModel {
     public final DoubleProperty ratioMaxYProperty = new SimpleDoubleProperty();
     public final Observable<Double> ratioMaxYObservable = JavaFxObservable.valuesOf(ratioMaxYProperty).map(Number::doubleValue);
     
-    
     public PanelModel(double minX, double minY, double maxX, double maxY) {
         ratioMinXProperty.set(minX);
         ratioMinYProperty.set(minY);
@@ -34,6 +33,10 @@ public class PanelModel {
     
     public void setRatioMinX(double value) {
         ratioMinXProperty.set(value);
+    }
+    
+    public void setRatioMaxX(double value) {
+        ratioMaxXProperty.set(value);
     }
     
     public Double getRatioMinY() {
