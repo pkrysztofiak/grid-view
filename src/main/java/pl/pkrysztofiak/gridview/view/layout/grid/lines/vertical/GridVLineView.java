@@ -63,11 +63,6 @@ public class GridVLineView extends Pane {
             Observable.combineLatest(vLineModel.ratioMinYObservable, gridPanelsView.heightObservable, (ratioMinY, height) -> ratioMinY * height).subscribe(vLineView::setStartY);
             Observable.combineLatest(vLineModel.ratioMaxYObservable, gridPanelsView.heightObservable, (ratioMaxY, height) -> ratioMaxY * height).subscribe(vLineView::setEndY);
             
-//            gridPanelsView.heightObservable.subscribe(height -> {
-//                vLineView.setStartY(height * vLineModel.getRatioMinY());
-//                vLineView.setEndY(height * vLineModel.getRatioMaxY());
-//            });
-            
             gridVLineModel.vLineRemovedObservable.filter(vLineModel::equals).subscribe(removedPanelVLineModel -> lines.remove(vLineView));
         });
     }
