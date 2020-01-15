@@ -10,18 +10,10 @@ public class VLineModel implements Comparable<VLineModel> {
     
     private final ObjectProperty<Double> ratioMinYProperty = new SimpleObjectProperty<>();
     private final ObjectProperty<Double> ratioMaxYProperty = new SimpleObjectProperty<>();
-
-//    public VLineModel() {
-//    }
     
     public VLineModel(PanelModel panel) {
         this.panel = panel;
     }
-    
-//    public VLineModel(double ratioMinY, double ratioMaxY) {
-//        ratioMinYProperty.set(ratioMinY);
-//        ratioMaxYProperty.set(ratioMinY);
-//    }
     
     public Double getRatioMinY() {
         return ratioMinYProperty.get();

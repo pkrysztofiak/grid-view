@@ -40,10 +40,10 @@ public class GridVLineView extends Pane {
         this.gridPanelsView = panelsView;
         Bindings.bindContent(getChildren(), lines);
 
-        Observable.fromIterable(gridVLineModel.getPanelsVLines()).subscribe(this::onPanelVLineModelAdded);
-        gridVLineModel.panelVLineAddedObservable().subscribe(this::onPanelVLineModelAdded);
+        Observable.fromIterable(gridVLineModel.getVLines()).subscribe(this::onPanelVLineModelAdded);
+        gridVLineModel.vLineAddedObservable.subscribe(this::onPanelVLineModelAdded);
         
-        Observable.combineLatest(gridVLineModel.ratioXObservable(), panelsView.widthObservable, (ratioX, width) -> ratioX * width)
+        Observable.combineLatest(gridVLineModel.ratioXObservable, panelsView.widthObservable, (ratioX, width) -> ratioX * width)
         .subscribe(x -> setLayoutX(x));
         
         prefHeightProperty().bind(panelsView.heightProperty());
@@ -51,7 +51,8 @@ public class GridVLineView extends Pane {
         pressedXObservable.switchMap(pressedX -> Observable.combineLatest(draggedXObservable, Observable.just(gridVLineModel.getRatioX()), (draggedX, ratioX) -> {
             return ratioX + (draggedX - pressedX) / panelsView.getWidth();
         })).subscribe(newRatioX -> {
-            gridVLineModel.drag(newRatioX);
+//            gridVLineModel.drag(newRatioX);
+            gridVLineModel.drag.onNext(newRatioX);
         });
     }
     
@@ -67,13 +68,14 @@ public class GridVLineView extends Pane {
                 panelVLineView.setEndY(height * panelVLineModel.getRatioMaxY());
             });
             
-            gridVLineModel.panelVLineRemovedObservable().filter(panelVLineModel::equals).subscribe(removedPanelVLineModel -> lines.remove(panelVLineView));
+            gridVLineModel.vLineRemovedObservable.filter(panelVLineModel::equals).subscribe(removedPanelVLineModel -> lines.remove(panelVLineView));
         });
     }
     
     
     private void onDragStarted(Point2D screenPoint) {
         Point2D point = gridPanelsView.screenToLocal(screenPoint);
-        gridVLineModel.startDrag(new Point2D(point.getX() / gridPanelsView.getWidth(), point.getY() / gridPanelsView.getHeight()));
+//        gridVLineModel.startDrag(new Point2D(point.getX() / gridPanelsView.getWidth(), point.getY() / gridPanelsView.getHeight()));
+        gridVLineModel.startDrag.onNext(new Point2D(point.getX() / gridPanelsView.getWidth(), point.getY() / gridPanelsView.getHeight()));
     }
 }

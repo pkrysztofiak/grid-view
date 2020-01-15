@@ -41,10 +41,10 @@ public class GridPanelsModelBehaviour {
             Optional<GridVLineModel> optional = findVGridLine(ratioX);
             if (optional.isPresent()) {
                 GridVLineModel vGridLine = optional.get();
-                vGridLine.add(panel);
+                vGridLine.addPanel.onNext(panel);
             } else {
                 GridVLineModel vGridLine = new GridVLineModel(ratioX, vGridLines);
-                vGridLine.add(panel);
+                vGridLine.addPanel.onNext(panel);
                 vGridLines.add(vGridLine);
             }
         });
