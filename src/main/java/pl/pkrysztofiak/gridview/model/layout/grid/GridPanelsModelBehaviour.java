@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 import pl.pkrysztofiak.gridview.model.layout.grid.lines.vertical.GridVLineModel;
 import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
-public class Behaviour {
+public class GridPanelsModelBehaviour {
 
     private final ObservableList<PanelModel> panels = FXCollections.observableArrayList();
     private final ObservableList<PanelModel> unmodifiablePanels = FXCollections.unmodifiableObservableList(panels);

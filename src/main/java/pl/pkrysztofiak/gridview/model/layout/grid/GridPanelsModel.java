@@ -12,7 +12,7 @@ import pl.pkrysztofiak.gridview.model.panels.PanelModel;
 
 public class GridPanelsModel {
     
-    private final Behaviour behaviour = new Behaviour();
+    private final GridPanelsModelBehaviour behaviour = new GridPanelsModelBehaviour();
     public final PublishSubject<PanelModel> addPanelRequest = PublishSubject.create();
     
     {
