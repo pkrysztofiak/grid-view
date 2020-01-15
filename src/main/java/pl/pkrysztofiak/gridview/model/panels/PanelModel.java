@@ -35,8 +35,16 @@ public class PanelModel {
         ratioMinXProperty.set(value);
     }
     
+    public void setRatioMinY(double value) {
+        ratioMinYProperty.set(value);
+    }
+    
     public void setRatioMaxX(double value) {
         ratioMaxXProperty.set(value);
+    }
+    
+    public void setRatioMaxY(double value) {
+        ratioMaxYProperty.set(value);
     }
     
     public Double getRatioMinY() {
