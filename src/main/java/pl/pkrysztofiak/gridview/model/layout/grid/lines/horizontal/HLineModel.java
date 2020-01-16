@@ -29,7 +29,6 @@ public class HLineModel implements Comparable<HLineModel> {
     }
 
     public void setRatioMinX(double value) {
-        System.out.println("setRatioMinX=" + value);
         ratioMinXProperty.set(value);
     }
     
